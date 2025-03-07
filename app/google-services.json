@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "680031559997",
+    "project_id": "tfg-inicial",
+    "storage_bucket": "tfg-inicial.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:680031559997:android:930e52ba4a930ecf4fa554",
+        "android_client_info": {
+          "package_name": "com.example.tfg_inicial"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcqZ-I57SNpEHDMW00jmbVb-AnquyqcuE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
