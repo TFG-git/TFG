@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fragmentTransaction.add(R.id.llContenedorFragments, fragmentInicial);
         fragmentTransaction.commit();
 
-        Toast.makeText(this, "Holaaaaaaaaaaaaa", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Hola", Toast.LENGTH_LONG).show();
 
     }
 
