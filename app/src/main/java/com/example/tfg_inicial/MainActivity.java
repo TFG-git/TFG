@@ -49,8 +49,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         fragmentTransaction.add(R.id.llContenedorFragments, fragmentInicial);
         fragmentTransaction.commit();
-
-        Toast.makeText(this, "Prueba de Leandro", Toast.LENGTH_LONG).show();
     }
 
     @Override
