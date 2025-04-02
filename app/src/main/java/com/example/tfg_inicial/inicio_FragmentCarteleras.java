@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,14 @@ import com.example.tfg_inicial.clases.Cartelera;
 import com.example.tfg_inicial.clases.Pelea;
 import com.example.tfg_inicial.clases.Peleador;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
@@ -29,6 +34,7 @@ public class inicio_FragmentCarteleras extends Fragment {
 
     private ListView lvCarteleras;
     private ArrayList<Cartelera> carteleras;
+    private FirebaseStorage storage;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -77,14 +83,49 @@ public class inicio_FragmentCarteleras extends Fragment {
         View view = inflater.inflate(R.layout.fragment_inicio__carteleras, container, false);
 
         lvCarteleras = view.findViewById(R.id.lvCarteleras);
-        cargarCartelerasListView();
+
+        //Acceso a JSON en Firebase y cargado de elementos en ListView
+        storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference().child("jsonPrueba.json");
+        storageRef.getBytes(1024 * 1024) // 1MB máximo
+                .addOnSuccessListener(bytes -> {
+                    try {
+                        // Convertir los bytes a String
+                        String jsonStr = new String(bytes, StandardCharsets.UTF_8);
+                        cargarCartelerasListView(jsonStr);
+                    } catch (Exception e) {
+                        Log.e("JSON", "Error al procesar JSON", e);
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("Storage", "Error al descargar JSON", e));
+
+        lvCarteleras.setOnItemClickListener((parent, view1, position, id) -> {
+            Cartelera carteleraSeleccionada = carteleras.get(position);
+
+            Log.d("DEBUG", "Elemento seleccionado: " + carteleraSeleccionada);
+
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("cartelera", carteleraSeleccionada);
+
+            Fragment fragmentPeleas = new carteleras_FragmentPeleas();
+            fragmentPeleas.setArguments(bundle);
+
+            requireActivity().findViewById(R.id.viewPager).setVisibility(View.GONE);
+
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentInicio, fragmentPeleas)
+                    .addToBackStack(null) // Permite volver atrás
+                    .commit();
+
+            requireActivity().getSupportFragmentManager().executePendingTransactions();
+
+            Log.d("DEBUG", "Commit completado?");
+        });
 
         return view;
     }
 
-    private void cargarCartelerasListView(){
-
-        String jsonStr = "[{\"id\": \"1\",\"nombre\":\"UFC 313\",\"lugar\": \"T-Mobile Arena, Las Vegas United States\",\"dia\": \"Dom, Mar 9\",\"peleas\":[{\"id\": \"10\",\"peleador1\":{\"id\": \"100\",\"nombre\": \"Alex Pereira\",\"nacionalidad\": \"Brasil\",\"division\": \"LightHeavyWeight\"},\"peleador2\":{\"id\": \"101\",\"nombre\": \"Magomed Ankalaev\",\"nacionalidad\": \"Rusia\",\"division\": \"LightHeavyWeight\"},\"vencedor\": \"101\",\"metodo_victoria\": \"UD\"},{\"id\": \"11\",\"peleador1\":{\"id\": \"102\",\"nombre\": \"Justin Gaethje\",\"nacionalidad\": \"EEUU\",\"division\": \"LightWeight\"},\"peleador2\":{\"id\": \"103\",\"nombre\": \"Rafael Fiziev\",\"nacionalidad\": \"Azerbaiyan\",\"division\": \"LightWeight\"},\"vencedor\": \"102\",\"metodo_victoria\": \"UD\"},{\"id\": \"12\",\"peleador1\":{\"id\": \"104\",\"nombre\": \"Jalin Turner\",\"nacionalidad\": \"EEUU\",\"division\": \"LightWeight\"},\"peleador2\":{\"id\": \"105\",\"nombre\": \"Ignacio Bahamondes\",\"nacionalidad\": \"Chile\",\"division\": \"LightWeight\"},\"vencedor\": \"105\",\"metodo_victoria\": \"Submision\"}]}]";
+    private void cargarCartelerasListView(String jsonStr){
         try {
             JSONArray jsonArrayCarteleras = new JSONArray(jsonStr);
             carteleras = new ArrayList<>();

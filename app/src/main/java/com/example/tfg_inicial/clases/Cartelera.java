@@ -1,8 +1,13 @@
 package com.example.tfg_inicial.clases;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 
-public class Cartelera {
+public class Cartelera implements Parcelable {
 
     //Atributos
     private int idCartelera;
@@ -22,6 +27,38 @@ public class Cartelera {
         this.lugar = lugar;
         this.peleas = peleas;
     }
+
+    //Metodos Parcelable
+    protected Cartelera(Parcel in) {
+        idCartelera = in.readInt();
+        nombreCartelera = in.readString();
+        fecha = in.readString();
+        lugar = in.readString();
+        peleas = in.createTypedArrayList(Pelea.CREATOR);
+    }
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeInt(idCartelera);
+        dest.writeString(nombreCartelera);
+        dest.writeString(lugar);
+        dest.writeString(fecha);
+        dest.writeTypedList(peleas);
+    }
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    public static final Creator<Cartelera> CREATOR = new Creator<Cartelera>() {
+        @Override
+        public Cartelera createFromParcel(Parcel in) {
+            return new Cartelera(in);
+        }
+
+        @Override
+        public Cartelera[] newArray(int size) {
+            return new Cartelera[size];
+        }
+    };
 
     //Getters y Setters
     public int getIdCartelera() {return idCartelera;}

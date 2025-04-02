@@ -1,6 +1,11 @@
 package com.example.tfg_inicial.clases;
 
-public class Peleador {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class Peleador implements Parcelable {
 
     //Atributos
     private int idPeleador;
@@ -18,6 +23,36 @@ public class Peleador {
         this.nacionalidad = nacionalidad;
         this.division = division;
     }
+
+    //Metodo Parcelable
+    protected Peleador(Parcel in) {
+        idPeleador = in.readInt();
+        nombrePeleador = in.readString();
+        nacionalidad = in.readString();
+        division = in.readString();
+    }
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeInt(idPeleador);
+        dest.writeString(nombrePeleador);
+        dest.writeString(nacionalidad);
+        dest.writeString(division);
+    }
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    public static final Creator<Peleador> CREATOR = new Creator<Peleador>() {
+        @Override
+        public Peleador createFromParcel(Parcel in) {
+            return new Peleador(in);
+        }
+
+        @Override
+        public Peleador[] newArray(int size) {
+            return new Peleador[size];
+        }
+    };
 
     //Getters y Setters
     public int getIdPeleador() {return idPeleador;}

@@ -1,6 +1,7 @@
 package com.example.tfg_inicial.adaptadores;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import com.example.tfg_inicial.R;
+import com.example.tfg_inicial.carteleras_FragmentPeleas;
 import com.example.tfg_inicial.clases.Cartelera;
 
 import java.util.ArrayList;

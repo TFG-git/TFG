@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragmentInicio"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".FragmentInicio"
-    android:background="@color/negroClaro">
+    android:background="@color/negroOscuro">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -14,7 +15,7 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabBackground="@color/negroClaro"
+        app:tabBackground="@color/negroOscuro"
         app:tabIndicatorColor="@color/rojo2"
         app:tabIndicatorAnimationMode="fade"
         app:tabSelectedTextColor="@color/rojo2"
