@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".inicio_FragmentCarteleras">
+    tools:context=".fragments.inicio.carteleras.inicio_FragmentCarteleras">
 
     <ImageButton
         android:layout_width="wrap_content"

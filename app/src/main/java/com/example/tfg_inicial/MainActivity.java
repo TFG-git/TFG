@@ -2,19 +2,16 @@ package com.example.tfg_inicial;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.tfg_inicial.fragments.inicio.FragmentInicio;
+import com.example.tfg_inicial.fragments.listas.FragmentListas;
+import com.example.tfg_inicial.fragments.perfil.FragmentPerfil;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {

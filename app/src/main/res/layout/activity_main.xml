@@ -21,26 +21,29 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
-        android:background="#FFFF0000">
+        android:background="@color/negroClaro">
 
         <ImageButton
             android:id="@+id/btnListas"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_launcher_foreground"/>
+            android:src="@drawable/ic_favorite"
+            android:background="@color/negroClaro"/>
         <ImageButton
             android:id="@+id/btnInicio"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_launcher_foreground"/>
+            android:src="@drawable/ic_home"
+            android:background="@color/negroClaro"/>
         <ImageButton
             android:id="@+id/btnPerfil"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_launcher_foreground"/>
+            android:src="@drawable/ic_profile"
+            android:background="@color/negroClaro"/>
 
     </LinearLayout>
 

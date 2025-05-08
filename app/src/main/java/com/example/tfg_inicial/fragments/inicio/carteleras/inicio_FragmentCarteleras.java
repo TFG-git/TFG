@@ -1,4 +1,4 @@
-package com.example.tfg_inicial;
+package com.example.tfg_inicial.fragments.inicio.carteleras;
 
 import android.os.Bundle;
 
@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.tfg_inicial.R;
 import com.example.tfg_inicial.adaptadores.AdaptadorPersonalizadoCarteleras;
 import com.example.tfg_inicial.clases.Cartelera;
 import com.example.tfg_inicial.clases.Pelea;

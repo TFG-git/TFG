@@ -1,4 +1,4 @@
-package com.example.tfg_inicial;
+package com.example.tfg_inicial.fragments.inicio.peleadores;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.tfg_inicial.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FragmentPerfil#newInstance} factory method to
+ * Use the {@link inicio_FragmentPeleadores#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentPerfil extends Fragment {
+public class inicio_FragmentPeleadores extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class FragmentPerfil extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public FragmentPerfil() {
+    public inicio_FragmentPeleadores() {
         // Required empty public constructor
     }
 
@@ -34,11 +36,11 @@ public class FragmentPerfil extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentPerfil.
+     * @return A new instance of fragment inicio_FragmentPeleadores.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentPerfil newInstance(String param1, String param2) {
-        FragmentPerfil fragment = new FragmentPerfil();
+    public static inicio_FragmentPeleadores newInstance(String param1, String param2) {
+        inicio_FragmentPeleadores fragment = new inicio_FragmentPeleadores();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +61,6 @@ public class FragmentPerfil extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_perfil, container, false);
+        return inflater.inflate(R.layout.fragment_inicio__peleadores, container, false);
     }
 }

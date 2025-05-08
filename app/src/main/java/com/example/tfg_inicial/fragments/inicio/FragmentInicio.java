@@ -1,4 +1,4 @@
-package com.example.tfg_inicial;
+package com.example.tfg_inicial.fragments.inicio;
 
 import android.os.Bundle;
 
@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.tfg_inicial.R;
+import com.example.tfg_inicial.adaptadores.ViewPagerAdapterFragmentInicio;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
