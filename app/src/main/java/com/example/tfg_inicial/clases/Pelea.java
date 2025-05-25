@@ -5,47 +5,93 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class Pelea implements Parcelable {
 
     //Atributos
-    private int idPelea;
-    private Peleador peleador1;
-    private Peleador peleador2;
-    private Peleador vencedor;
-    private String metodo_victoria;
 
-    //Constructor vacío
-    public Pelea() { }
+    @SerializedName("winner")
+    private String ganador;
 
-    //Constructor
-    public Pelea(int idPelea, Peleador peleador1, Peleador peleador2, Peleador vencedor, String metodo_victoria) {
-        this.idPelea = idPelea;
-        this.peleador1 = peleador1;
-        this.peleador2 = peleador2;
-        this.vencedor = vencedor;
-        this.metodo_victoria = metodo_victoria;
+    @SerializedName("weight_class")
+    private String categoriaPeso;
+
+    @SerializedName("method")
+    private String metodo;
+
+    @SerializedName("details")
+    private String detalles;
+
+    @SerializedName("round")
+    private String ronda;
+
+    @SerializedName("time")
+    private String tiempo;
+
+    @SerializedName("fighters")
+    private Map<String, Peleador> peleadores;
+
+    public Pelea() {
+        peleadores = new HashMap<>();
     }
 
-    //Metodos Parcelable
+    public String getGanador() { return ganador; }
+    public String getCategoriaPeso() { return categoriaPeso; }
+    public String getMetodo() { return metodo; }
+    public String getDetalles() { return detalles; }
+    public String getRonda() { return ronda; }
+    public String getTiempo() { return tiempo; }
+    public Map<String, Peleador> getPeleadores() { return peleadores; }
+
+    public Peleador getPeleadorRojo() {
+        return peleadores != null ? peleadores.get("red") : null;
+    }
+
+    public Peleador getPeleadorAzul() {
+        return peleadores != null ? peleadores.get("blue") : null;
+    }
+
+    // Parcelable implementation
     protected Pelea(Parcel in) {
-        idPelea = in.readInt();
-        peleador1 = in.readParcelable(Peleador.class.getClassLoader());
-        peleador2 = in.readParcelable(Peleador.class.getClassLoader());
-        vencedor = in.readParcelable(Peleador.class.getClassLoader());
-        metodo_victoria = in.readString();
+        ganador = in.readString();
+        categoriaPeso = in.readString();
+        metodo = in.readString();
+        detalles = in.readString();
+        ronda = in.readString();
+        tiempo = in.readString();
+        peleadores = new HashMap<>();
+        int size = in.readInt();
+        for (int i = 0; i < size; i++) {
+            String key = in.readString();
+            Peleador value = in.readParcelable(Peleador.class.getClassLoader());
+            peleadores.put(key, value);
+        }
     }
+
     @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeInt(idPelea);
-        dest.writeParcelable(peleador1, flags);
-        dest.writeParcelable(peleador2, flags);
-        dest.writeParcelable(vencedor, flags);
-        dest.writeString(metodo_victoria);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(ganador);
+        dest.writeString(categoriaPeso);
+        dest.writeString(metodo);
+        dest.writeString(detalles);
+        dest.writeString(ronda);
+        dest.writeString(tiempo);
+        dest.writeInt(peleadores.size());
+        for (Map.Entry<String, Peleador> entry : peleadores.entrySet()) {
+            dest.writeString(entry.getKey());
+            dest.writeParcelable(entry.getValue(), flags);
+        }
     }
+
     @Override
     public int describeContents() {
         return 0;
     }
+
     public static final Creator<Pelea> CREATOR = new Creator<Pelea>() {
         @Override
         public Pelea createFromParcel(Parcel in) {
@@ -57,20 +103,4 @@ public class Pelea implements Parcelable {
             return new Pelea[size];
         }
     };
-
-    //Getters y Setters
-    public int getIdPelea() {return idPelea;}
-    public void setIdPelea(int idPelea) {this.idPelea = idPelea;}
-
-    public Peleador getPeleador1() {return peleador1;}
-    public void setPeleador1(Peleador peleador1) {this.peleador1 = peleador1;}
-
-    public Peleador getPeleador2() {return peleador2;}
-    public void setPeleador2(Peleador peleador2) {this.peleador2 = peleador2;}
-
-    public Peleador getVencedor() {return vencedor;}
-    public void setVencedor(Peleador vencedor) {this.vencedor = vencedor;}
-
-    public String getMetodo_victoria() {return metodo_victoria;}
-    public void setMetodo_victoria(String metodo_victoria) {this.metodo_victoria = metodo_victoria;}
 }

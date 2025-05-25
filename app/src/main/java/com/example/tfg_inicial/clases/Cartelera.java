@@ -2,18 +2,29 @@ package com.example.tfg_inicial.clases;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Cartelera implements Parcelable {
 
     //Atributos
     private int idCartelera;
+    @SerializedName("event_name")
     private String nombreCartelera;
+    @SerializedName("event_date")
     private String fecha;
+    @SerializedName("event_location")
     private String lugar;
+    @SerializedName("fights")
     private ArrayList<Pelea> peleas;
 
     //Constructor vacío
@@ -69,6 +80,16 @@ public class Cartelera implements Parcelable {
 
     public String getFecha() {return fecha;}
     public void setFecha(String fecha) {this.fecha = fecha;}
+
+    public Date getFechaParseada() {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
+            return sdf.parse(fecha);
+        } catch (ParseException e) {
+            Log.e("ERROR AL PARSEAR", "Error al parsear fecha: \"" + fecha + "\"", e);
+            return null;
+        }
+    }
 
     public String getLugar() {return lugar;}
     public void setLugar(String lugar) {this.lugar = lugar;}

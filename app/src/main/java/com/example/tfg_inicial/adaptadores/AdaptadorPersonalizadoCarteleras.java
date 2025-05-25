@@ -1,54 +1,87 @@
 package com.example.tfg_inicial.adaptadores;
 
-import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tfg_inicial.R;
 import com.example.tfg_inicial.clases.Cartelera;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class AdaptadorPersonalizadoCarteleras extends BaseAdapter {
+public class AdaptadorPersonalizadoCarteleras extends RecyclerView.Adapter<AdaptadorPersonalizadoCarteleras.ViewHolder> {
 
-    private Context context;
+    public interface OnItemClickListener {
+        void onItemClick(Cartelera cartelera);
+    }
 
-    private ArrayList<Cartelera> carteleras;
+    private final List<Cartelera> carteleraList;
+    private final OnItemClickListener listener;
 
-    public AdaptadorPersonalizadoCarteleras(Context context, ArrayList<Cartelera> carteleras) {
-        this.context = context;
-        this.carteleras = carteleras;
+    public AdaptadorPersonalizadoCarteleras(List<Cartelera> carteleraList, OnItemClickListener listener) {
+        this.carteleraList = carteleraList;
+        this.listener = listener;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View vista = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cartelerasrecyclerview, parent, false);
+        return new ViewHolder(vista);
     }
 
     @Override
-    public int getCount() { return carteleras.size(); }
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Cartelera cartelera = carteleraList.get(position);
+        holder.bind(cartelera, listener);
+        Log.d("Adaptador onBind", "Vinculando: " + cartelera.getNombreCartelera());
+    }
 
     @Override
-    public Object getItem(int position) { return carteleras.get(position); }
+    public int getItemCount() {
+        Log.d("itemCount", carteleraList.size() + "");
+        return carteleraList.size();
+    }
 
-    @Override
-    public long getItemId(int position) { return carteleras.get(position).hashCode(); }
+    public void agregarMas(List<Cartelera> nuevasCarteleras) {
+        int posicionInicio = carteleraList.size();
+        carteleraList.addAll(nuevasCarteleras);
+        notifyItemRangeInserted(posicionInicio, nuevasCarteleras.size());
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //return null;
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.item_carteleraslistview, null);
+        Log.d("Adaptador agregarMas", "Agregadas " + nuevasCarteleras.size() + " nuevas carteleras");
+    }
 
-        TextView tvNombreCartelera = view.findViewById(R.id.tvNombreCartelera);
-        TextView tvLugar = view.findViewById(R.id.tvLugar);
-        TextView tvFecha = view.findViewById(R.id.tvFecha);
-        ImageView ivPeleador1 = view.findViewById(R.id.ivPeleador1);
-        ImageView ivPeleador2 = view.findViewById(R.id.ivPeleador2);
+    public void actualizarLista(List<Cartelera> nuevaLista) {
+        carteleraList.clear();
+        carteleraList.addAll(nuevaLista);
+        Log.d("Adaptador actLista", "Actualizando con " + nuevaLista.size() + " elementos");
+        notifyDataSetChanged();
+    }
 
-        tvNombreCartelera.setText(carteleras.get(position).getNombreCartelera());
-        tvLugar.setText(carteleras.get(position).getLugar());
-        tvFecha.setText(carteleras.get(position).getFecha());
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView nombre, fecha, ubicacion;
 
-        return view;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            nombre = itemView.findViewById(R.id.textViewNombreEvento);
+            fecha = itemView.findViewById(R.id.textViewFecha);
+            ubicacion = itemView.findViewById(R.id.textViewUbicacion);
+        }
+
+        public void bind(Cartelera cartelera, OnItemClickListener listener) {
+            nombre.setText(cartelera.getNombreCartelera());
+            fecha.setText(cartelera.getFecha());
+            ubicacion.setText(cartelera.getLugar());
+
+            itemView.setOnClickListener(v -> {
+                Log.d("Adaptador", "Clic en: " + cartelera.getNombreCartelera());
+                listener.onItemClick(cartelera);
+            });
+        }
     }
 }

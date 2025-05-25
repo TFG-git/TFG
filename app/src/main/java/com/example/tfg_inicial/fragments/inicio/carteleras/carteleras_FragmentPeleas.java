@@ -1,14 +1,15 @@
 package com.example.tfg_inicial.fragments.inicio.carteleras;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tfg_inicial.R;
 import com.example.tfg_inicial.adaptadores.AdaptadorPersonalizadoPeleas;
@@ -21,36 +22,15 @@ import com.example.tfg_inicial.clases.Cartelera;
  */
 public class carteleras_FragmentPeleas extends Fragment {
 
-    private ListView lvPeleas;
+    private RecyclerView recyclerViewPeleas;
+    private static final String ARG_CARTELERA = "cartelera";
+
     private Cartelera cartelera;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public carteleras_FragmentPeleas() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment carteleras_FragmentPeleas.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static carteleras_FragmentPeleas newInstance(String param1, String param2) {
+    public static carteleras_FragmentPeleas newInstance(Cartelera cartelera) {
         carteleras_FragmentPeleas fragment = new carteleras_FragmentPeleas();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable(ARG_CARTELERA, cartelera);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,33 +39,26 @@ public class carteleras_FragmentPeleas extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            cartelera = getArguments().getParcelable(ARG_CARTELERA);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_carteleras__peleas, container, false);
-
-        Log.d("Fragmento abierto", "El fragmento se creo correctamente");
-
-        lvPeleas = view.findViewById(R.id.lvPeleas);
-
-        if (getArguments() != null) {
-            cartelera = getArguments().getParcelable("cartelera");
-            AdaptadorPersonalizadoPeleas adaptadorPersonalizadoPeleas = new AdaptadorPersonalizadoPeleas(requireContext(), cartelera.getPeleas());
-            lvPeleas.setAdapter(adaptadorPersonalizadoPeleas);
-        }
-        return view;
+        return inflater.inflate(R.layout.fragment_carteleras__peleas, container, false);
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        requireActivity().findViewById(R.id.viewPager).setVisibility(View.VISIBLE);
-    }
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+        recyclerViewPeleas = view.findViewById(R.id.recyclerViewPeleas);
+        recyclerViewPeleas.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        if (cartelera != null && cartelera.getPeleas() != null) {
+            AdaptadorPersonalizadoPeleas adaptador = new AdaptadorPersonalizadoPeleas(cartelera.getPeleas());
+            recyclerViewPeleas.setAdapter(adaptador);
+        }
+    }
 }
