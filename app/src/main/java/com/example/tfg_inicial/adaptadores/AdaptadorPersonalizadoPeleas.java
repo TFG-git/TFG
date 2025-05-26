@@ -8,10 +8,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.tfg_inicial.R;
 import com.example.tfg_inicial.clases.Pelea;
+import com.example.tfg_inicial.clases.Peleador;
+import com.example.tfg_inicial.dialogs.PeleadorDialogFragment;
 
 import java.util.List;
 
@@ -41,7 +45,7 @@ public class AdaptadorPersonalizadoPeleas extends RecyclerView.Adapter<Adaptador
         return peleaList != null ? peleaList.size() : 0;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewNombreRojo, textViewVs, textViewNombreAzul, textViewMetodo, textViewCategoria;
         ImageView imagePeleadorRojo, imagePeleadorAzul;
@@ -73,6 +77,18 @@ public class AdaptadorPersonalizadoPeleas extends RecyclerView.Adapter<Adaptador
 
             imagePeleadorRojo.setImageResource(R.drawable.no_profile_image);
             imagePeleadorAzul.setImageResource(R.drawable.no_profile_image);
+
+            imagePeleadorRojo.setOnClickListener(v -> {
+                Peleador peleador = pelea.getPeleadorRojo();
+                PeleadorDialogFragment dialog = PeleadorDialogFragment.newInstance(peleador);
+                dialog.show(((AppCompatActivity) v.getContext()).getSupportFragmentManager(), "PeleadorDialog");
+            });
+
+            imagePeleadorAzul.setOnClickListener(v -> {
+                Peleador peleador = pelea.getPeleadorAzul();
+                PeleadorDialogFragment dialog = PeleadorDialogFragment.newInstance(peleador);
+                dialog.show(((AppCompatActivity) v.getContext()).getSupportFragmentManager(), "PeleadorDialog");
+            });
 
             buttonLike.setOnClickListener(v -> {
                 // Like

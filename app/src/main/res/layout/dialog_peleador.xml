@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="@color/negroClaro">
+
+        <ImageButton
+            android:id="@+id/buttonCerrar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_close"
+            android:background="@android:color/transparent"
+            android:contentDescription="Cerrar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/imagePeleador"
+            android:layout_width="225dp"
+            android:layout_height="300dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/topuria_ilia"
+            app:layout_constraintTop_toBottomOf="@id/buttonCerrar"
+            app:layout_constraintBottom_toTopOf="@id/graficoPlaceholder"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp" />
+
+        <TextView
+            android:id="@+id/textViewNombre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Nombre completo"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/blanco"
+            app:layout_constraintTop_toTopOf="@id/imagePeleador"
+            app:layout_constraintStart_toEndOf="@id/imagePeleador"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewApodo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Apodo"
+            android:textColor="@color/grisClaro"
+            app:layout_constraintTop_toBottomOf="@id/textViewNombre"
+            app:layout_constraintStart_toStartOf="@id/textViewNombre"
+            app:layout_constraintEnd_toEndOf="@id/textViewNombre" />
+
+        <TextView
+            android:id="@+id/textViewRecord"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="0-0-0"
+            android:textColor="@color/grisClaro"
+            app:layout_constraintTop_toBottomOf="@id/textViewApodo"
+            app:layout_constraintStart_toStartOf="@id/textViewNombre"
+            app:layout_constraintEnd_toEndOf="@id/textViewNombre" />
+
+        <TextView
+            android:id="@+id/textViewNacionalidad"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Nacionalidad"
+            android:textColor="@color/gris"
+            app:layout_constraintTop_toBottomOf="@id/textViewRecord"
+            app:layout_constraintStart_toStartOf="@id/textViewNombre"
+            app:layout_constraintEnd_toEndOf="@id/textViewNombre" />
+
+        <TextView
+            android:id="@+id/textViewGuardia"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Guardia: Southpaw"
+            android:textColor="@color/gris"
+            app:layout_constraintTop_toBottomOf="@id/textViewNacionalidad"
+            app:layout_constraintStart_toStartOf="@id/textViewNombre"
+            app:layout_constraintEnd_toEndOf="@id/textViewNombre" />
+
+        <FrameLayout
+            android:id="@+id/graficoPlaceholder"
+            android:layout_width="0dp"
+            android:layout_height="160dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintTop_toBottomOf="@id/imagePeleador"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/textViewPeleas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Historial de peleas (próximamente...)"
+            android:textColor="@color/blanco"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/graficoPlaceholder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="12dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
