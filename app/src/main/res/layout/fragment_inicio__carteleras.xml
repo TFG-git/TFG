@@ -12,6 +12,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Buscar evento..."
+        android:textColorHint="@color/grisClaro"
+        android:textColor="@color/grisClaro"
         android:inputType="text"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +27,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="Buscar"
         android:src="@drawable/ic_lupa"
+        android:backgroundTint="@color/negroClaro"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/buttonOrdenar"
         android:layout_marginEnd="8dp"/>
@@ -36,6 +39,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="Ordenar"
         android:src="@drawable/ic_ordenar"
+        android:backgroundTint="@color/negroClaro"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

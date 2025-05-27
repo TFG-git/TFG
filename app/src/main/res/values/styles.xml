@@ -6,4 +6,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:fontFamily">@font/notosans_bold</item>
+    </style>
 </resources>

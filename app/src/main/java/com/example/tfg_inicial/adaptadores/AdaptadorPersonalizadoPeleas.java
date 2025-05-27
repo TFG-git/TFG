@@ -11,11 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.tfg_inicial.R;
 import com.example.tfg_inicial.clases.Pelea;
 import com.example.tfg_inicial.clases.Peleador;
 import com.example.tfg_inicial.dialogs.PeleadorDialogFragment;
+import com.example.tfg_inicial.fragments.inicio.carteleras.DetallePeleaFragment;
 
 import java.util.List;
 
@@ -88,6 +90,16 @@ public class AdaptadorPersonalizadoPeleas extends RecyclerView.Adapter<Adaptador
                 Peleador peleador = pelea.getPeleadorAzul();
                 PeleadorDialogFragment dialog = PeleadorDialogFragment.newInstance(peleador);
                 dialog.show(((AppCompatActivity) v.getContext()).getSupportFragmentManager(), "PeleadorDialog");
+            });
+
+            //Clic para detalle Peleas
+            itemView.setOnClickListener(v -> {
+                FragmentManager fm = ((AppCompatActivity) v.getContext()).getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.setCustomAnimations(R.anim.fade_enter, R.anim.fade_exit); // transición suave
+                ft.replace(R.id.llContenedorFragments, DetallePeleaFragment.newInstance(pelea));
+                ft.addToBackStack(null);
+                ft.commit();
             });
 
             buttonLike.setOnClickListener(v -> {

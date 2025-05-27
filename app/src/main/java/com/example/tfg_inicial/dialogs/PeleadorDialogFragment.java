@@ -61,7 +61,7 @@ public class PeleadorDialogFragment extends DialogFragment {
 
         if (peleador != null) {
             textViewNombre.setText(peleador.getNombreCompleto());
-            textViewApodo.setText(peleador.getNombreCompleto());
+            textViewApodo.setText("\"" + peleador.getApodo() + "\"");
             textViewNacionalidad.setText(peleador.getNacionalidad());
             //textViewRecord.setText(peleador.get());
 

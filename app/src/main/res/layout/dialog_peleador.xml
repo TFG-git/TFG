@@ -53,6 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Apodo"
+            android:textStyle="italic"
             android:textColor="@color/grisClaro"
             app:layout_constraintTop_toBottomOf="@id/textViewNombre"
             app:layout_constraintStart_toStartOf="@id/textViewNombre"
