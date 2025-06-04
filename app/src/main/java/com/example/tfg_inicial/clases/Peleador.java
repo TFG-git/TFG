@@ -10,123 +10,79 @@ import com.google.gson.annotations.SerializedName;
 public class Peleador implements Parcelable {
 
     //Atributos
-    @SerializedName("full_name")
+    @SerializedName("id")
+    private String idPeleador;
+    @SerializedName("nombrePeleador")
     private String nombreCompleto;
 
-    @SerializedName("nickname")
+    @SerializedName("apodo")
     private String apodo;
 
-    @SerializedName("nationality")
-    private String nacionalidad;
+    @SerializedName("record")
+    private String record;
 
-    @SerializedName("stance")
+    @SerializedName("altura")
+    private String altura;
+
+    @SerializedName("peso")
+    private String peso;
+
+    @SerializedName("alcance")
+    private String alcance;
+
+    @SerializedName("guardia")
     private String guardia;
 
-    @SerializedName("kd")
-    private String knockdowns;
+    @SerializedName("fechaNacimiento")
+    private String fechaNacimiento;
 
-    @SerializedName("str_landed")
-    private String golpesTotales;
+    @SerializedName("strikesPrecision")
+    private String strikesPrecision;
 
-    @SerializedName("str_total")
-    private String golpesIntentados;
+    @SerializedName("strikesDefensa")
+    private String strikesDefensa;
 
-    @SerializedName("str_head_landed")
-    private String golpesCabeza;
+    @SerializedName("tdPrecision")
+    private String tdPrecision;
 
-    @SerializedName("str_head_total")
-    private String intentosCabeza;
+    @SerializedName("tdDefensa")
+    private String tdDefensa;
 
-    @SerializedName("str_body_landed")
-    private String golpesCuerpo;
-
-    @SerializedName("str_body_total")
-    private String intentosCuerpo;
-
-    @SerializedName("str_leg_landed")
-    private String golpesPierna;
-
-    @SerializedName("str_leg_total")
-    private String intentosPierna;
-
-    @SerializedName("str_distance_landed")
-    private String golpesDistancia;
-
-    @SerializedName("str_distance_total")
-    private String intentosDistancia;
-
-    @SerializedName("str_clinch_landed")
-    private String golpesClinch;
-
-    @SerializedName("str_clinch_total")
-    private String intentosClinch;
-
-    @SerializedName("str_ground_landed")
-    private String golpesSuelo;
-
-    @SerializedName("str_ground_total")
-    private String intentosSuelo;
-
-    @SerializedName("td_landed")
-    private String takedowns;
-
-    @SerializedName("td_total")
-    private String intentosTD;
-
-    @SerializedName("sub")
-    private String intentosSub;
-
+    //Constructor vacío para GSON
     public Peleador() {}
 
+    // Constructor para Parcel
     protected Peleador(Parcel in) {
+        idPeleador = in.readString();
         nombreCompleto = in.readString();
         apodo = in.readString();
-        nacionalidad = in.readString();
+        record = in.readString();
+        altura = in.readString();
+        peso = in.readString();
+        alcance = in.readString();
         guardia = in.readString();
-        knockdowns = in.readString();
-        golpesTotales = in.readString();
-        golpesIntentados = in.readString();
-        golpesCabeza = in.readString();
-        intentosCabeza = in.readString();
-        golpesCuerpo = in.readString();
-        intentosCuerpo = in.readString();
-        golpesPierna = in.readString();
-        intentosPierna = in.readString();
-        golpesDistancia = in.readString();
-        intentosDistancia = in.readString();
-        golpesClinch = in.readString();
-        intentosClinch = in.readString();
-        golpesSuelo = in.readString();
-        intentosSuelo = in.readString();
-        takedowns = in.readString();
-        intentosTD = in.readString();
-        intentosSub = in.readString();
+        fechaNacimiento = in.readString();
+        strikesPrecision = in.readString();
+        strikesDefensa = in.readString();
+        tdPrecision = in.readString();
+        tdDefensa = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(idPeleador);
         dest.writeString(nombreCompleto);
         dest.writeString(apodo);
-        dest.writeString(nacionalidad);
+        dest.writeString(record);
+        dest.writeString(altura);
+        dest.writeString(peso);
+        dest.writeString(alcance);
         dest.writeString(guardia);
-        dest.writeString(knockdowns);
-        dest.writeString(golpesTotales);
-        dest.writeString(golpesIntentados);
-        dest.writeString(golpesCabeza);
-        dest.writeString(intentosCabeza);
-        dest.writeString(golpesCuerpo);
-        dest.writeString(intentosCuerpo);
-        dest.writeString(golpesPierna);
-        dest.writeString(intentosPierna);
-        dest.writeString(golpesDistancia);
-        dest.writeString(intentosDistancia);
-        dest.writeString(golpesClinch);
-        dest.writeString(intentosClinch);
-        dest.writeString(golpesSuelo);
-        dest.writeString(intentosSuelo);
-        dest.writeString(takedowns);
-        dest.writeString(intentosTD);
-        dest.writeString(intentosSub);
+        dest.writeString(fechaNacimiento);
+        dest.writeString(strikesPrecision);
+        dest.writeString(strikesDefensa);
+        dest.writeString(tdPrecision);
+        dest.writeString(tdDefensa);
     }
 
     @Override
@@ -139,33 +95,63 @@ public class Peleador implements Parcelable {
         public Peleador createFromParcel(Parcel in) {
             return new Peleador(in);
         }
-
         @Override
         public Peleador[] newArray(int size) {
             return new Peleador[size];
         }
     };
 
-    public String getNombreCompleto() {return nombreCompleto;}
-    public String getApodo() {return apodo;}
-    public String getNacionalidad() {return nacionalidad;}
-    public String getGuardia() {return guardia;}
-    public String getKnockdowns() {return knockdowns;}
-    public String getGolpesTotales() {return golpesTotales;}
-    public String getGolpesIntentados() {return golpesIntentados;}
-    public String getGolpesCabeza() {return golpesCabeza;}
-    public String getIntentosCabeza() {return intentosCabeza;}
-    public String getGolpesCuerpo() {return golpesCuerpo;}
-    public String getIntentosCuerpo() {return intentosCuerpo;}
-    public String getGolpesPierna() {return golpesPierna;}
-    public String getIntentosPierna() {return intentosPierna;}
-    public String getGolpesDistancia() {return golpesDistancia;}
-    public String getIntentosDistancia() {return intentosDistancia;}
-    public String getGolpesClinch() {return golpesClinch;}
-    public String getIntentosClinch() {return intentosClinch;}
-    public String getGolpesSuelo() {return golpesSuelo;}
-    public String getIntentosSuelo() {return intentosSuelo;}
-    public String getTakedowns() {return takedowns;}
-    public String getIntentosTD() {return intentosTD;}
-    public String getIntentosSub() {return intentosSub;}
+    // Getters y setters
+    public String getIdPeleador() { return idPeleador; }
+    public void setIdPeleador(String idPeleador) { this.idPeleador = idPeleador; }
+
+    public String getNombreCompleto() { return nombreCompleto; }
+    public void setNombreCompleto(String nombreCompleto) { this.nombreCompleto = nombreCompleto; }
+
+    public String getApodo() { return apodo; }
+    public void setApodo(String apodo) { this.apodo = apodo; }
+
+    public String getRecord() { return record; }
+    public void setRecord(String record) { this.record = record; }
+
+    public String getAltura() { return altura; }
+    public void setAltura(String altura) { this.altura = altura; }
+
+    public String getPeso() { return peso; }
+    public void setPeso(String peso) { this.peso = peso; }
+
+    public String getAlcance() { return alcance; }
+    public void setAlcance(String alcance) { this.alcance = alcance; }
+
+    public String getGuardia() { return guardia; }
+    public void setGuardia(String guardia) { this.guardia = guardia; }
+
+    public String getFechaNacimiento() { return fechaNacimiento; }
+    public void setFechaNacimiento(String fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
+
+    public String getStrikesPrecision() { return strikesPrecision; }
+    public void setStrikesPrecision(String strikesPrecision) { this.strikesPrecision = strikesPrecision; }
+
+    public String getStrikesDefensa() { return strikesDefensa; }
+    public void setStrikesDefensa(String strikesDefensa) { this.strikesDefensa = strikesDefensa; }
+
+    public String getTdPrecision() { return tdPrecision; }
+    public void setTdPrecision(String tdPrecision) { this.tdPrecision = tdPrecision; }
+
+    public String getTdDefensa() { return tdDefensa; }
+    public void setTdDefensa(String tdDefensa) { this.tdDefensa = tdDefensa; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Peleador peleador = (Peleador) o;
+        return idPeleador != null ? idPeleador.equals(peleador.idPeleador) : peleador.idPeleador == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return idPeleador != null ? idPeleador.hashCode() : 0;
+    }
+
 }

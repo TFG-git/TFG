@@ -43,6 +43,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-storage:20.0.0")
     implementation("com.google.firebase:firebase-auth:22.3.0")
+    implementation("com.google.firebase:firebase-database:20.3.0")
 
     // add the Firebase SDK for Google Analytics
     implementation("com.google.firebase:firebase-analytics:17.4.1")
@@ -53,6 +54,11 @@ dependencies {
     implementation("androidx.viewpager2:viewpager2:1.0.0")
 
     implementation("com.google.code.gson:gson:2.10.1")
+
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     implementation(libs.appcompat)
     implementation(libs.material)

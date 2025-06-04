@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:padding="8dp">
 
-    <!-- Campo de búsqueda -->
     <EditText
         android:id="@+id/editTextBuscar"
         android:layout_width="0dp"
@@ -20,7 +19,6 @@
         app:layout_constraintEnd_toStartOf="@id/buttonBuscar"
         android:layout_marginEnd="8dp"/>
 
-    <!-- Botón lupa (buscar) -->
     <ImageButton
         android:id="@+id/buttonBuscar"
         android:layout_width="wrap_content"
@@ -32,7 +30,6 @@
         app:layout_constraintEnd_toStartOf="@id/buttonOrdenar"
         android:layout_marginEnd="8dp"/>
 
-    <!-- Botón de ordenamiento -->
     <ImageButton
         android:id="@+id/buttonOrdenar"
         android:layout_width="wrap_content"
@@ -43,7 +40,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCarteleras"
         android:layout_width="0dp"
@@ -54,7 +50,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp"/>
 
-    <!-- Botón 'Cargar más' bajo el RecyclerView, encima del borde inferior -->
     <Button
         android:id="@+id/buttonCargarMas"
         android:layout_width="wrap_content"

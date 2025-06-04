@@ -1,0 +1,6 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/orden_mas_actuales" android:title="Más actuales"/>
+    <item android:id="@+id/orden_mas_antiguos" android:title="Más antiguos"/>
+    <item android:id="@+id/orden_valoracion_mayor" android:title="Valoración: más likes"/>
+    <item android:id="@+id/orden_valoracion_menor" android:title="Valoración: más dislikes"/>
+</menu>

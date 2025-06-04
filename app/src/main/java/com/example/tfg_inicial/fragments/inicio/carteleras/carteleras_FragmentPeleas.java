@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tfg_inicial.MainViewModel;
 import com.example.tfg_inicial.R;
 import com.example.tfg_inicial.adaptadores.AdaptadorPersonalizadoPeleas;
 import com.example.tfg_inicial.clases.Cartelera;
@@ -56,8 +58,10 @@ public class carteleras_FragmentPeleas extends Fragment {
         recyclerViewPeleas = view.findViewById(R.id.recyclerViewPeleas);
         recyclerViewPeleas.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        MainViewModel viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+
         if (cartelera != null && cartelera.getPeleas() != null) {
-            AdaptadorPersonalizadoPeleas adaptador = new AdaptadorPersonalizadoPeleas(cartelera.getPeleas());
+            AdaptadorPersonalizadoPeleas adaptador = new AdaptadorPersonalizadoPeleas(cartelera.getPeleas(), viewModel);
             recyclerViewPeleas.setAdapter(adaptador);
         }
     }

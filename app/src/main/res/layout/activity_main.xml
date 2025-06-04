@@ -10,6 +10,32 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/layoutCargando"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@color/negroClaro"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+    <ProgressBar
+        android:id="@+id/progressBarCargando"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
+        android:indeterminate="true" />
+
+    <TextView
+        android:id="@+id/textoCargando"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cargando datos, por favor espere..."
+        android:textColor="@android:color/white"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp"/>
+</LinearLayout>
+
+    <LinearLayout
         android:id="@+id/llContenedorFragments"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -43,7 +69,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_profile"
+            android:src="@drawable/ic_profile_outline"
             android:background="@color/negroClaro"/>
 
     </LinearLayout>

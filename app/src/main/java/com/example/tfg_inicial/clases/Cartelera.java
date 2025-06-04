@@ -17,6 +17,7 @@ import java.util.Locale;
 public class Cartelera implements Parcelable {
 
     //Atributos
+    @SerializedName("event_id")
     private int idCartelera;
     @SerializedName("event_name")
     private String nombreCartelera;
@@ -27,17 +28,8 @@ public class Cartelera implements Parcelable {
     @SerializedName("fights")
     private ArrayList<Pelea> peleas;
 
-    //Constructor vacío
+    //Constructor vacío para GSON
     public Cartelera() { }
-
-    //Constructor
-    public Cartelera(int idCartelera, String nombreCartelera, String fecha, String lugar, ArrayList<Pelea> peleas) {
-        this.idCartelera = idCartelera;
-        this.nombreCartelera = nombreCartelera;
-        this.fecha = fecha;
-        this.lugar = lugar;
-        this.peleas = peleas;
-    }
 
     //Metodos Parcelable
     protected Cartelera(Parcel in) {

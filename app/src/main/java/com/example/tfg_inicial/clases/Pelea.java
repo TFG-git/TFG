@@ -13,6 +13,8 @@ import java.util.Map;
 public class Pelea implements Parcelable {
 
     //Atributos
+    @SerializedName("fight_id")
+    private int idPelea;
 
     @SerializedName("winner")
     private String ganador;
@@ -33,27 +35,26 @@ public class Pelea implements Parcelable {
     private String tiempo;
 
     @SerializedName("fighters")
-    private Map<String, Peleador> peleadores;
+    private Map<String, EstadisticasPeleaPeleador> peleadores;
 
+    //Constructor vacío para GSON
     public Pelea() {
         peleadores = new HashMap<>();
     }
 
+    public int getIdPelea(){ return idPelea; }
     public String getGanador() { return ganador; }
     public String getCategoriaPeso() { return categoriaPeso; }
     public String getMetodo() { return metodo; }
     public String getDetalles() { return detalles; }
     public String getRonda() { return ronda; }
     public String getTiempo() { return tiempo; }
-    public Map<String, Peleador> getPeleadores() { return peleadores; }
 
-    public Peleador getPeleadorRojo() {
-        return peleadores != null ? peleadores.get("red") : null;
-    }
+    public Map<String, EstadisticasPeleaPeleador> getPeleadores() { return peleadores; }
 
-    public Peleador getPeleadorAzul() {
-        return peleadores != null ? peleadores.get("blue") : null;
-    }
+    public EstadisticasPeleaPeleador  getPeleadorRojo() { return peleadores != null ? peleadores.get("red") : null; }
+
+    public EstadisticasPeleaPeleador  getPeleadorAzul() { return peleadores != null ? peleadores.get("blue") : null; }
 
     // Parcelable implementation
     protected Pelea(Parcel in) {
@@ -67,7 +68,7 @@ public class Pelea implements Parcelable {
         int size = in.readInt();
         for (int i = 0; i < size; i++) {
             String key = in.readString();
-            Peleador value = in.readParcelable(Peleador.class.getClassLoader());
+            EstadisticasPeleaPeleador value = in.readParcelable(EstadisticasPeleaPeleador.class.getClassLoader());
             peleadores.put(key, value);
         }
     }
@@ -81,7 +82,7 @@ public class Pelea implements Parcelable {
         dest.writeString(ronda);
         dest.writeString(tiempo);
         dest.writeInt(peleadores.size());
-        for (Map.Entry<String, Peleador> entry : peleadores.entrySet()) {
+        for (Map.Entry<String, EstadisticasPeleaPeleador> entry : peleadores.entrySet()) {
             dest.writeString(entry.getKey());
             dest.writeParcelable(entry.getValue(), flags);
         }
@@ -103,4 +104,17 @@ public class Pelea implements Parcelable {
             return new Pelea[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pelea pelea = (Pelea) o;
+        return idPelea == pelea.idPelea;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(idPelea);
+    }
 }

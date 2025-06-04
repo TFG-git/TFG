@@ -8,9 +8,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,6 +48,9 @@ public class inicio_FragmentCarteleras extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // ViewModel
+        viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+
         recyclerView = view.findViewById(R.id.recyclerViewCarteleras);
         btnCargarMas = view.findViewById(R.id.buttonCargarMas);
         editBuscar = view.findViewById(R.id.editTextBuscar);
@@ -54,21 +61,18 @@ public class inicio_FragmentCarteleras extends Fragment {
 
         // Crear el adaptador inicial con lista vacía
         adaptador = new AdaptadorPersonalizadoCarteleras(new ArrayList<>(), cartelera -> {
-            Fragment fragment = carteleras_FragmentPeleas.newInstance(cartelera);
-            requireActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.llContenedorFragments, fragment)
-                    .addToBackStack(null)
-                    .commit();
-        });
+            FragmentManager fm = ((AppCompatActivity) view.getContext()).getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.setCustomAnimations(R.anim.fade_enter, R.anim.fade_exit); // transición suave
+            ft.replace(R.id.llContenedorFragments, carteleras_FragmentPeleas.newInstance(cartelera));
+            ft.addToBackStack(null);
+            ft.commit();
+        }, viewModel);
         recyclerView.setAdapter(adaptador);
 
-        // ViewModel
-        viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
-
-        if (viewModel.isDataLoaded()) {
+        if (viewModel.isDataLoadedCarteleras()) {
             Log.d("Fragment", "ViewModel ya tiene datos, forzando recarga");
-            viewModel.aplicarFiltroYOrden("", true); // usa filtro por defecto
+            viewModel.aplicarFiltroYOrdenEventos("", true, MainViewModel.ORDEN_MAS_ACTUALES); // usa filtro por defecto
         }
 
         // Observar cambios en los datos
@@ -90,14 +94,31 @@ public class inicio_FragmentCarteleras extends Fragment {
         // Botón: Buscar
         btnBuscar.setOnClickListener(v -> {
             String texto = editBuscar.getText().toString();
-            viewModel.aplicarFiltroYOrden(texto, ordenAscendente);
+            viewModel.aplicarFiltroYOrdenEventos(texto, true, MainViewModel.ORDEN_MAS_ACTUALES);
         });
 
         // Botón: Ordenar
         btnOrdenar.setOnClickListener(v -> {
-            ordenAscendente = !ordenAscendente;
-            String texto = editBuscar.getText().toString();
-            viewModel.aplicarFiltroYOrden(texto, ordenAscendente);
+            PopupMenu popupMenu = new PopupMenu(requireContext(), v);
+            popupMenu.getMenuInflater().inflate(R.menu.menu_ordenar_carteleras, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.orden_mas_actuales) {
+                    viewModel.aplicarFiltroYOrdenEventos("", true, MainViewModel.ORDEN_MAS_ACTUALES);
+                    return true;
+                } else if (id == R.id.orden_mas_antiguos) {
+                    viewModel.aplicarFiltroYOrdenEventos("", true, MainViewModel.ORDEN_MAS_ANTIGUOS);
+                    return true;
+                } else if (id == R.id.orden_valoracion_mayor) {
+                    viewModel.aplicarFiltroYOrdenEventos("", true, MainViewModel.ORDEN_VALORACION_MAYOR);
+                    return true;
+                } else if (id == R.id.orden_valoracion_menor) {
+                    viewModel.aplicarFiltroYOrdenEventos("", true, MainViewModel.ORDEN_VALORACION_MENOR);
+                    return true;
+                }
+                return false;
+            });
+            popupMenu.show();
         });
     }
 }

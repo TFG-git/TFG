@@ -4,18 +4,121 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     android:background="@color/negroClaro">
 
-    <Button
-        android:id="@+id/buttonLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cerrar sesión"
-        android:textColor="@android:color/white"
-        android:backgroundTint="@color/rojo2"
+    <!--Botón cerrar sesión-->
+    <ImageButton
+        android:id="@+id/btnCerrarSesion"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_logout"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:contentDescription="Cerrar sesión"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp" />
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"/>
+
+    <!--Imagen de perfil-->
+    <ImageView
+        android:id="@+id/fotoPerfil"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        app:layout_constraintTop_toBottomOf="@id/btnCerrarSesion"
+        android:layout_marginTop="42dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:scaleType="centerCrop"
+        android:background="@drawable/circular_bg"
+        android:contentDescription="Foto de perfil"/>
+
+    <ImageButton
+        android:id="@+id/btnCambiarFoto"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="@id/fotoPerfil"
+        app:layout_constraintEnd_toEndOf="@id/fotoPerfil"
+        android:background="@drawable/circular_bg"
+        android:src="@drawable/ic_camara"
+        android:contentDescription="Cambiar foto"
+        android:visibility="gone"/>
+
+    <EditText
+        android:id="@+id/etNombre"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        app:layout_constraintTop_toBottomOf="@id/fotoPerfil"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Nombre"
+        android:textSize="16dp"
+        android:enabled="false"
+        android:textColor="@color/grisClaro"
+        android:textColorHint="@color/grisClaro"
+        android:background="@drawable/edittext_redondeado_bg"/>
+
+    <Spinner
+        android:id="@+id/spinnerNacionalidad"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/etNombre"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:enabled="false"/>
+
+    <EditText
+        android:id="@+id/etBio"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:padding="4dp"
+        app:layout_constraintTop_toBottomOf="@id/spinnerNacionalidad"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="18dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Bio"
+        android:enabled="false"
+        android:gravity="top|start"
+        android:maxLines="5"
+        android:minLines="3"
+        android:textSize="16dp"
+        android:textColor="@color/grisClaro"
+        android:textColorHint="@color/grisClaro"
+        android:background="@drawable/edittext_redondeado_bg"/>
+
+    <Button
+        android:id="@+id/btnEditar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/etBio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:text="Editar"
+        android:textColor="@color/grisClaro"
+        android:backgroundTint="@color/rojo2"/>
+
+    <Button
+        android:id="@+id/btnGuardar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btnEditar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:text="Guardar"
+        android:backgroundTint="@color/rojo1"
+        android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
