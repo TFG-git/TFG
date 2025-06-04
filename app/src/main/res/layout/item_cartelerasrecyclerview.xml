@@ -1,0 +1,144 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="6dp"
+    app:cardBackgroundColor="@color/negroClaro">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        android:background="@color/negroClaro">
+
+        <!-- Guidelines para dividir espacio entre nombre e imagen en ambos lados -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineSuperior"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.34" />
+
+        <!-- Imagen Peleador Rojo -->
+        <ImageView
+            android:id="@+id/imagePeleadorRojo"
+            android:layout_width="100dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/no_profile_image"
+            app:layout_constraintTop_toBottomOf="@id/guidelineSuperior"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <!-- Nombre del evento -->
+        <TextView
+            android:id="@+id/textViewNombreEvento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre evento"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/blanco"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/guidelineSuperior"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Imagen Peleador Azul -->
+        <ImageView
+            android:id="@+id/imagePeleadorAzul"
+            android:layout_width="100dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/no_profile_image"
+            app:layout_constraintTop_toBottomOf="@id/guidelineSuperior"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <!-- Contenedor central (evento, fecha, ubicación, botones) -->
+        <LinearLayout
+            android:id="@+id/layoutCentro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/textViewNombreEvento"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imagePeleadorRojo"
+            app:layout_constraintEnd_toStartOf="@id/imagePeleadorAzul">
+
+            <!-- Fecha -->
+            <TextView
+                android:id="@+id/textViewFecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fecha"
+                android:textColor="@color/grisClaro"
+                android:gravity="center"
+                android:layout_marginTop="4dp"/>
+
+            <!-- Ubicación -->
+            <TextView
+                android:id="@+id/textViewUbicacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lugar"
+                android:textColor="@color/gris"
+                android:gravity="center"
+                android:layout_marginTop="2dp"/>
+
+            <!-- Botones centrados -->
+            <LinearLayout
+                android:id="@+id/layoutBotones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="10dp">
+
+                <ImageButton
+                    android:id="@+id/buttonFavorito"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_favorite"
+                    android:background="@color/negroClaro"
+                    android:contentDescription="Guardar evento"
+                    android:layout_marginEnd="8dp" />
+
+                <ImageButton
+                    android:id="@+id/buttonLike"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_thumb"
+                    android:background="@color/negroClaro"
+                    android:contentDescription="Me gusta"
+                    android:layout_marginEnd="8dp" />
+
+                <ImageButton
+                    android:id="@+id/buttonDislike"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_thumb"
+                    android:scaleX="-1"
+                    android:scaleY="-1"
+                    android:background="@color/negroClaro"
+                    android:contentDescription="No me gusta"
+                    android:layout_marginEnd="8dp" />
+
+                <ImageButton
+                    android:id="@+id/buttonComentarios"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_comentario"
+                    android:background="@color/negroClaro"
+                    android:contentDescription="Comentarios" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

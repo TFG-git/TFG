@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragmentInicio"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".FragmentInicio"
-    android:background="#FF0000">
+    tools:context=".fragments.inicio.FragmentInicio"
+    android:background="@color/negroClaro">
 
     <!-- TODO: Update blank fragment layout -->
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:tabBackground="@color/negroClaro"
+        app:tabIndicatorColor="@color/rojo2"
+        app:tabIndicatorAnimationMode="fade"
+        app:tabSelectedTextColor="@color/rojo2"
+        app:tabTextColor="@color/gris"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

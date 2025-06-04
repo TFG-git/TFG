@@ -1,4 +1,4 @@
-package com.example.tfg_inicial;
+package com.example.tfg_inicial.adaptadores;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -6,6 +6,9 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.example.tfg_inicial.fragments.inicio.carteleras.inicio_FragmentCarteleras;
+import com.example.tfg_inicial.fragments.inicio.peleadores.inicio_FragmentPeleadores;
 
 public class ViewPagerAdapterFragmentInicio extends FragmentStateAdapter {
     public ViewPagerAdapterFragmentInicio(@NonNull FragmentActivity fragmentActivity) {

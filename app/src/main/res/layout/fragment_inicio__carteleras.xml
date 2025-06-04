@@ -1,14 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".inicio_FragmentCarteleras">
+    android:padding="8dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Estamos en las carteleras" />
+    <EditText
+        android:id="@+id/editTextBuscar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Buscar evento..."
+        android:textColorHint="@color/grisClaro"
+        android:textColor="@color/grisClaro"
+        android:inputType="text"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/buttonBuscar"
+        android:layout_marginEnd="8dp"/>
 
-</FrameLayout>
+    <ImageButton
+        android:id="@+id/buttonBuscar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Buscar"
+        android:src="@drawable/ic_lupa"
+        android:backgroundTint="@color/negroClaro"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/buttonOrdenar"
+        android:layout_marginEnd="8dp"/>
+
+    <ImageButton
+        android:id="@+id/buttonOrdenar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Ordenar"
+        android:src="@drawable/ic_ordenar"
+        android:backgroundTint="@color/negroClaro"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCarteleras"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/editTextBuscar"
+        app:layout_constraintBottom_toTopOf="@id/buttonCargarMas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <Button
+        android:id="@+id/buttonCargarMas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cargar más"
+        android:backgroundTint="@color/rojo2"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/recyclerViewCarteleras"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="12dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

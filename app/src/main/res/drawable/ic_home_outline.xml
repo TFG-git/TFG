@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Outline del tejado y paredes -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="@color/rojo1"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:pathData="M12,3 L2,12 H5 V20 H10 V14 H14 V20 H19 V12 H22 Z"/>
+
+    <!-- Base izquierda de la casa -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="@color/rojo1"
+        android:strokeWidth="2"
+        android:pathData="M5,20 H10"/>
+
+    <!-- Base derecha de la casa -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="@color/rojo1"
+        android:strokeWidth="2"
+        android:pathData="M14,20 H19"/>
+</vector>
