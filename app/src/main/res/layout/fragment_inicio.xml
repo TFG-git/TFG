@@ -19,7 +19,8 @@
         app:tabIndicatorColor="@color/rojo2"
         app:tabIndicatorAnimationMode="fade"
         app:tabSelectedTextColor="@color/rojo2"
-        app:tabTextColor="@color/gris"/>
+        app:tabTextColor="@color/gris"
+        android:background="@color/negroClaro"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

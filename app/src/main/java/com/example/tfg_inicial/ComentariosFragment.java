@@ -8,15 +8,21 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.tfg_inicial.adaptadores.AdaptadorPersonalizadoComentarios;
+import com.example.tfg_inicial.clases.Cartelera;
 import com.example.tfg_inicial.clases.Comentario;
+import com.example.tfg_inicial.clases.EstadisticasPeleaPeleador;
+import com.example.tfg_inicial.clases.Pelea;
+import com.example.tfg_inicial.clases.Peleador;
 import com.example.tfg_inicial.clases.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
@@ -70,6 +76,8 @@ public class ComentariosFragment extends Fragment {
         EditText editComentario = view.findViewById(R.id.editComentario);
         ImageButton btnEnviarComentario = view.findViewById(R.id.btnEnviarComentario);
         ImageView avatarUsuario = view.findViewById(R.id.avatarUsuario);
+        TextView textTitulo = view.findViewById(R.id.textTitulo);
+        textTitulo.setText(mostrarInfoElementoComentario(tipo, idEntidad));
 
         // Avatar usuario
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -134,5 +142,50 @@ public class ComentariosFragment extends Fragment {
                         .addOnFailureListener(e -> Toast.makeText(requireContext(), "Error al enviar", Toast.LENGTH_SHORT).show());
             }
         });
+
     }
+    private String mostrarInfoElementoComentario(String tipo, String id) {
+        String nombreElemento = "";
+
+        MainViewModel viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+
+        switch (tipo) {
+            case "cartelera":
+                List<Cartelera> carteleras = viewModel.getCarteleraCompleta();
+                for (Cartelera c : carteleras) {
+                    if (String.valueOf(c.getIdCartelera()).equals(id)) {
+                        nombreElemento = "Comentarios | " + c.getNombreCartelera();
+                        break;
+                    }
+                }
+                break;
+            case "pelea":
+                List<Pelea> peleas = viewModel.getPeleasAll();
+                for (Pelea p : peleas) {
+                    if (String.valueOf(p.getIdPelea()).equals(id)) {
+                        String nombreRojo = p.getPeleadorRojo().getNombre();
+                        String nombreAzul = p.getPeleadorAzul().getNombre();
+                        nombreElemento = "Comentarios | " + (nombreRojo != null ? nombreRojo : "Peleador Rojo") + " vs " +
+                                (nombreAzul != null ? nombreAzul : "Peleador Azul");
+                        break;
+                    }
+                }
+                break;
+            case "peleador":
+                List<Peleador> peleadores = viewModel.getPeleadoresAll();
+                for (Peleador pel : peleadores) {
+                    if (pel.getIdPeleador().equals(id)) {
+                        nombreElemento = "Comentarios | " + pel.getNombreCompleto();
+                        break;
+                    }
+                }
+                break;
+            default:
+                nombreElemento = "Elemento desconocido";
+                break;
+        }
+
+        return nombreElemento;
+    }
+
 }

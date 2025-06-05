@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.example.tfg_inicial.ComentariosFragment;
 import com.example.tfg_inicial.DescargarUrlCache;
 import com.example.tfg_inicial.InteraccionesManager;
 import com.example.tfg_inicial.MainViewModel;
@@ -251,6 +252,15 @@ public class AdaptadorPersonalizadoPeleas extends RecyclerView.Adapter<Adaptador
                         toast.show();
                     });
                 }, 300);
+            });
+
+            buttonComentarios.setOnClickListener(v -> {
+                FragmentManager fm = ((AppCompatActivity) v.getContext()).getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.setCustomAnimations(R.anim.fade_enter, R.anim.fade_exit); // transición suave
+                ft.replace(R.id.llContenedorFragments, ComentariosFragment.newInstance("pelea", peleaId));
+                ft.addToBackStack(null);
+                ft.commit();
             });
         }
 

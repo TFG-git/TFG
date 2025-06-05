@@ -99,21 +99,23 @@ public class inicio_FragmentCarteleras extends Fragment {
 
         // Botón: Ordenar
         btnOrdenar.setOnClickListener(v -> {
+
+            String texto = editBuscar.getText().toString();
             PopupMenu popupMenu = new PopupMenu(requireContext(), v);
             popupMenu.getMenuInflater().inflate(R.menu.menu_ordenar_carteleras, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(item -> {
                 int id = item.getItemId();
                 if (id == R.id.orden_mas_actuales) {
-                    viewModel.aplicarFiltroYOrdenEventos("", true, MainViewModel.ORDEN_MAS_ACTUALES);
+                    viewModel.aplicarFiltroYOrdenEventos(texto, true, MainViewModel.ORDEN_MAS_ACTUALES);
                     return true;
                 } else if (id == R.id.orden_mas_antiguos) {
-                    viewModel.aplicarFiltroYOrdenEventos("", true, MainViewModel.ORDEN_MAS_ANTIGUOS);
+                    viewModel.aplicarFiltroYOrdenEventos(texto, true, MainViewModel.ORDEN_MAS_ANTIGUOS);
                     return true;
                 } else if (id == R.id.orden_valoracion_mayor) {
-                    viewModel.aplicarFiltroYOrdenEventos("", true, MainViewModel.ORDEN_VALORACION_MAYOR);
+                    viewModel.aplicarFiltroYOrdenEventos(texto, true, MainViewModel.ORDEN_VALORACION_MAYOR);
                     return true;
                 } else if (id == R.id.orden_valoracion_menor) {
-                    viewModel.aplicarFiltroYOrdenEventos("", true, MainViewModel.ORDEN_VALORACION_MENOR);
+                    viewModel.aplicarFiltroYOrdenEventos(texto, true, MainViewModel.ORDEN_VALORACION_MENOR);
                     return true;
                 }
                 return false;

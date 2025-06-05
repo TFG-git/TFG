@@ -1,6 +1,8 @@
 package com.example.tfg_inicial;
 
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -79,6 +81,7 @@ public class MainViewModel extends ViewModel {
             peleadoresAll.addAll(listaDesdeJson);
             peleadoresFiltrados = new ArrayList<>(listaDesdeJson);
             peleadoresLiveData.setValue(peleadoresFiltrados);
+            aplicarFiltroYOrdenPeleadores("", true, ORDEN_VALORACION_MAYOR);
         }
 
     }
@@ -86,54 +89,59 @@ public class MainViewModel extends ViewModel {
     private Map<String, Integer> mapaLikesCarteleras = new HashMap<>();
     private Map<String, Integer> mapaDislikesCarteleras = new HashMap<>();
 
-    public void cargarRankingCarteleras() {
-        DatabaseReference rankingRef = FirebaseDatabase.getInstance().getReference("Ranking").child("carteleras");
-        rankingRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    public void cargarRankingCarteleras(Runnable onRankingLoaded) {
+        DatabaseReference interaccionesRef = FirebaseDatabase.getInstance().getReference("interacciones");
+        interaccionesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 mapaLikesCarteleras.clear();
                 mapaDislikesCarteleras.clear();
-                for (DataSnapshot carteleraSnapshot : snapshot.getChildren()) {
-                    String id = carteleraSnapshot.getKey();
-                    int likes = carteleraSnapshot.child("likes").getValue(Integer.class) != null ? carteleraSnapshot.child("likes").getValue(Integer.class) : 0;
-                    int dislikes = carteleraSnapshot.child("dislikes").getValue(Integer.class) != null ? carteleraSnapshot.child("dislikes").getValue(Integer.class) : 0;
-                    mapaLikesCarteleras.put(id, likes);
-                    mapaDislikesCarteleras.put(id, dislikes);
+
+                for (DataSnapshot usuarioSnapshot : snapshot.getChildren()) {
+                    DataSnapshot cartelerasSnapshot = usuarioSnapshot.child("carteleras");
+                    for (DataSnapshot carteleraSnapshot : cartelerasSnapshot.getChildren()) {
+                        String idCartelera = carteleraSnapshot.getKey();
+                        Boolean like = carteleraSnapshot.child("like").getValue(Boolean.class);
+                        Boolean dislike = carteleraSnapshot.child("dislike").getValue(Boolean.class);
+                        if (like != null && like) {
+                            int prev = mapaLikesCarteleras.containsKey(idCartelera) ? mapaLikesCarteleras.get(idCartelera) : 0;
+                            mapaLikesCarteleras.put(idCartelera, prev + 1);
+                        }
+                        if (dislike != null && dislike) {
+                            int prev = mapaDislikesCarteleras.containsKey(idCartelera) ? mapaDislikesCarteleras.get(idCartelera) : 0;
+                            mapaDislikesCarteleras.put(idCartelera, prev + 1);
+                        }
+                    }
                 }
+                if (onRankingLoaded != null) onRankingLoaded.run();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) { }
         });
     }
 
-    private final Map<String, Integer> mapaLikesPeleadores = new HashMap<>();
-    private final Map<String, Integer> mapaDislikesPeleadores = new HashMap<>();
-    public void cargarRankingPeleadores() {
-        DatabaseReference rankingRef = FirebaseDatabase.getInstance().getReference("Ranking").child("peleadores");
-        rankingRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                mapaLikesPeleadores.clear();
-                mapaDislikesPeleadores.clear();
-                for (DataSnapshot peleadorSnapshot : snapshot.getChildren()) {
-                    String id = peleadorSnapshot.getKey();
-                    int likes = peleadorSnapshot.child("likes").getValue(Integer.class) != null ? peleadorSnapshot.child("likes").getValue(Integer.class) : 0;
-                    int dislikes = peleadorSnapshot.child("dislikes").getValue(Integer.class) != null ? peleadorSnapshot.child("dislikes").getValue(Integer.class) : 0;
-                    mapaLikesPeleadores.put(id, likes);
-                    mapaDislikesPeleadores.put(id, dislikes);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        });
+    // Calculo del ratio de likes/dislikes para un evento
+    private int getValoracionCarteletas(Cartelera cartelera) {
+        int likes = mapaLikesCarteleras.getOrDefault(String.valueOf(cartelera.getIdCartelera()), 0);
+        int dislikes = mapaDislikesCarteleras.getOrDefault(String.valueOf(cartelera.getIdCartelera()), 0);
+        return likes - dislikes;
     }
 
     public void aplicarFiltroYOrdenEventos(String texto, boolean recargar, int tipoOrden) {
         this.textoFiltro = texto.trim().toLowerCase();
         this.recargar = recargar;
 
-        Comparator<Cartelera> comparator;
+        if (tipoOrden == ORDEN_VALORACION_MAYOR || tipoOrden == ORDEN_VALORACION_MENOR) {
+            cargarRankingCarteleras(() -> ordenarYPublicarEventos(tipoOrden));
+        } else {
+            ordenarYPublicarEventos(tipoOrden);
+        }
+    }
 
+    // Este metodo hace el filtrado, ordenado y publica el resultado.
+    private void ordenarYPublicarEventos(int tipoOrden) {
+        Comparator<Cartelera> comparator;
         switch (tipoOrden) {
             case ORDEN_MAS_ACTUALES:
                 comparator = Comparator.comparing(Cartelera::getFechaParseada).reversed();
@@ -142,54 +150,93 @@ public class MainViewModel extends ViewModel {
                 comparator = Comparator.comparing(Cartelera::getFechaParseada);
                 break;
             case ORDEN_VALORACION_MAYOR:
-                comparator = Comparator.comparingInt(this::getValoracion).reversed(); // Mayor a menor
+                comparator = Comparator.comparingInt(this::getValoracionCarteletas).reversed()
+                        .thenComparing(Cartelera::getFechaParseada, Comparator.reverseOrder());
                 break;
             case ORDEN_VALORACION_MENOR:
-                comparator = Comparator.comparingInt(this::getValoracion); // Menor a mayor
+                comparator = Comparator.comparingInt(this::getValoracionCarteletas)
+                        .thenComparing(Cartelera::getFechaParseada, Comparator.reverseOrder());
                 break;
             default:
-                comparator = Comparator.comparing(Cartelera::getFecha); // Por defecto antigüedad
+                comparator = Comparator.comparing(Cartelera::getFecha);
                 break;
         }
-
         carteleraFiltrada = carteleraCompleta.stream()
                 .filter(c -> c.getNombreCartelera() != null &&
                         c.getNombreCartelera().toLowerCase().contains(textoFiltro))
                 .sorted(comparator)
                 .collect(Collectors.toList());
-
-        // Cargar los primeros elementos visibles
         List<Cartelera> inicial = obtenerRango(0, elementosPorPagina);
         carteleraLiveData.setValue(new ArrayList<>(inicial));
     }
-    // Calculo del ratio de likes/dislikes para un evento
-    private int getValoracion(Cartelera cartelera) {
-        // Suponiendo que tienes un Map<String, Integer> de likes y dislikes:
-        int likes = mapaLikesCarteleras.getOrDefault(cartelera.getIdCartelera(), 0);
-        int dislikes = mapaDislikesCarteleras.getOrDefault(cartelera.getIdCartelera(), 0);
-        return likes - dislikes;
+
+    private final Map<String, Integer> mapaLikesPeleadores = new HashMap<>();
+    private final Map<String, Integer> mapaDislikesPeleadores = new HashMap<>();
+    public void cargarRankingPeleadores(Runnable onRankingLoaded) {
+        DatabaseReference rankingRef = FirebaseDatabase.getInstance().getReference("interacciones");
+        rankingRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                mapaLikesPeleadores.clear();
+                mapaDislikesPeleadores.clear();
+                for (DataSnapshot usuarioSnapshot : snapshot.getChildren()) {
+                    DataSnapshot peleadoresSnapshot = usuarioSnapshot.child("peleador");
+                    for (DataSnapshot peleadorSnapshot : peleadoresSnapshot.getChildren()) {
+                        String idPeleador = peleadorSnapshot.getKey();
+                        Boolean like = peleadorSnapshot.child("like").getValue(Boolean.class);
+                        Boolean dislike = peleadorSnapshot.child("dislike").getValue(Boolean.class);
+                        if (like != null && like) {
+                            int prev = mapaLikesPeleadores.containsKey(idPeleador) ? mapaLikesPeleadores.get(idPeleador) : 0;
+                            mapaLikesPeleadores.put(idPeleador, prev + 1);
+                        }
+                        if (dislike != null && dislike) {
+                            int prev = mapaDislikesPeleadores.containsKey(idPeleador) ? mapaDislikesPeleadores.get(idPeleador) : 0;
+                            mapaDislikesPeleadores.put(idPeleador, prev + 1);
+                        }
+                    }
+                }
+                if (onRankingLoaded != null) onRankingLoaded.run();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+    public void aplicarFiltroYOrdenPeleadores(String texto, boolean recargar, int tipoOrden) {
+        this.textoFiltro = texto.trim().toLowerCase();
+        this.recargar = recargar;
+
+        if (tipoOrden == ORDEN_VALORACION_MAYOR || tipoOrden == ORDEN_VALORACION_MENOR) {
+            cargarRankingPeleadores(() -> ordenarYPublicarPeleadores(tipoOrden));
+        } else {
+            ordenarYPublicarPeleadores(tipoOrden);
+        }
     }
 
-    public void aplicarFiltroYOrdenPeleadores(String texto, int tipoOrden) {
-        String textoFiltro = texto.trim().toLowerCase();
-
+    // Calculo del ratio de likes/dislikes para un peleador
+    private int getValoracionPeleador(Peleador peleador) {
+        int likes = mapaLikesPeleadores.getOrDefault(String.valueOf(peleador.getIdPeleador()), 0);
+        int dislikes = mapaDislikesPeleadores.getOrDefault(String.valueOf(peleador.getIdPeleador()), 0);
+        return likes - dislikes;
+    }
+    private void ordenarYPublicarPeleadores(int tipoOrden) {
         Comparator<Peleador> comparator;
-
         switch (tipoOrden) {
             case ORDEN_NOMBRE_AZ:
-                comparator = Comparator.comparing(Peleador::getNombreCompleto, String.CASE_INSENSITIVE_ORDER);
+                comparator = Comparator.comparing(Peleador::getNombreCompleto);
                 break;
             case ORDEN_NOMBRE_ZA:
-                comparator = Comparator.comparing(Peleador::getNombreCompleto, String.CASE_INSENSITIVE_ORDER).reversed();
+                comparator = Comparator.comparing(Peleador::getNombreCompleto).reversed();
                 break;
             case ORDEN_VALORACION_MAYOR:
-                comparator = Comparator.comparingInt(this::getValoracionPeleador).reversed();
+                comparator = Comparator.comparingInt(this::getValoracionPeleador).reversed()
+                        .thenComparing(Peleador::getNombreCompleto);
                 break;
             case ORDEN_VALORACION_MENOR:
-                comparator = Comparator.comparingInt(this::getValoracionPeleador);
+                comparator = Comparator.comparingInt(this::getValoracionPeleador)
+                        .thenComparing(Peleador::getNombreCompleto);
                 break;
             default:
-                comparator = Comparator.comparing(Peleador::getNombreCompleto, String.CASE_INSENSITIVE_ORDER);
+                comparator = Comparator.comparing(Peleador::getNombreCompleto);
                 break;
         }
 
@@ -200,14 +247,6 @@ public class MainViewModel extends ViewModel {
 
         peleadoresLiveData.setValue(new ArrayList<>(peleadoresFiltrados));
     }
-
-    // Calculo del ratio de likes/dislikes para un peleador
-    private int getValoracionPeleador(Peleador peleador) {
-        int likes = mapaLikesPeleadores.getOrDefault(String.valueOf(peleador.getIdPeleador()), 0);
-        int dislikes = mapaDislikesPeleadores.getOrDefault(String.valueOf(peleador.getIdPeleador()), 0);
-        return likes - dislikes;
-    }
-
     private List<Cartelera> obtenerRango(int inicio, int cantidad) {
         int fin = Math.min(inicio + cantidad, carteleraFiltrada.size());
         if (inicio >= fin) return new ArrayList<>();

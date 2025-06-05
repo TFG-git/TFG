@@ -91,7 +91,9 @@
                 android:text="Lugar"
                 android:textColor="@color/gris"
                 android:gravity="center"
-                android:layout_marginTop="2dp"/>
+                android:layout_marginTop="2dp"
+                android:maxLines="2"
+                android:ellipsize="end" />
 
             <!-- Botones centrados -->
             <LinearLayout
