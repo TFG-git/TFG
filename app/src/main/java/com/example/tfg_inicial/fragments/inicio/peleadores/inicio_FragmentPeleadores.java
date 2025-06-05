@@ -58,7 +58,7 @@ public class inicio_FragmentPeleadores extends Fragment {
         // Buscar con botón (igual que carteleras)
         buttonBuscar.setOnClickListener(v -> {
             String texto = etBuscar.getText().toString();
-            viewModel.aplicarFiltroYOrdenPeleadores(texto, MainViewModel.ORDEN_VALORACION_MAYOR);
+            viewModel.aplicarFiltroYOrdenPeleadores(texto, true, MainViewModel.ORDEN_VALORACION_MAYOR);
         });
 
         // Buscar al escribir (opcional, igual que carteleras si quieres auto-filtrado)
@@ -85,7 +85,7 @@ public class inicio_FragmentPeleadores extends Fragment {
 
         popupMenu.setOnMenuItemClickListener(item -> {
             String texto = etBuscar.getText().toString();
-            viewModel.aplicarFiltroYOrdenPeleadores(texto, item.getItemId());
+            viewModel.aplicarFiltroYOrdenPeleadores(texto, true, item.getItemId());
             return true;
         });
         popupMenu.show();

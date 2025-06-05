@@ -28,12 +28,9 @@ import java.nio.charset.StandardCharsets;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageButton btnInicio, btnListas, btnPerfil;
-    private FirebaseAnalytics mFirebaseAnalytics;
     private MainViewModel viewModel;
 
     private LinearLayout layoutCargando;
-    private boolean eventosCargados = false;
-    private boolean peleadoresCargados = false;
 
     int icHomeFilled = R.drawable.ic_home;
     int icHomeOutline = R.drawable.ic_home_outline;
@@ -50,8 +47,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         layoutCargando = findViewById(R.id.layoutCargando);
         layoutCargando.setVisibility(View.VISIBLE);
 
-        cargarEventos();
-        cargarPeleadores();
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+
+        if (viewModel.isDataLoadedCarteleras() && viewModel.isDataLoadedPeleadores()) {
+            layoutCargando.setVisibility(View.GONE);
+            mostrarFragmentInicioSiNoEsta();
+        } else {
+            layoutCargando.setVisibility(View.VISIBLE);
+            cargarEventos();
+            cargarPeleadores();
+        }
 
         btnInicio = findViewById(R.id.btnInicio);
         btnListas = findViewById(R.id.btnListas);
@@ -86,53 +91,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void cargarEventos(){
-        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
-
         if (!viewModel.isDataLoadedCarteleras()) {
             Log.d("MainActivity", "Cargando JSON desde Firebase");
-
             StorageReference ref = FirebaseStorage.getInstance()
                     .getReference()
                     .child("jsonCarteleras.json");
-
             ref.getBytes(25 * 1024 * 1024).addOnSuccessListener(bytes -> {
                 String jsonEventos = new String(bytes, StandardCharsets.UTF_8);
                 runOnUiThread(() -> {
                     viewModel.cargarJSONEventosDesdeTexto(jsonEventos);
-                    eventosCargados = true;
                     chequearCargaCompleta();
                 });
             }).addOnFailureListener(e -> {
                 Log.e("MainActivity", "Error al cargar JSON", e);
                 Toast.makeText(this, "Error al cargar eventos", Toast.LENGTH_LONG).show();
             });
-        } else {
-            Log.d("MainActivity", "Datos ya cargados en el ViewModel");
         }
     }
     public void cargarPeleadores(){
-        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
-
         if (!viewModel.isDataLoadedPeleadores()) {
             Log.d("MainActivity", "Cargando JSON desde Firebase");
-
             StorageReference ref = FirebaseStorage.getInstance()
                     .getReference()
                     .child("jsonPeleadores.json");
-
             ref.getBytes(20 * 1024 * 1024).addOnSuccessListener(bytes -> {
                 String jsonPeleadores = new String(bytes, StandardCharsets.UTF_8);
                 runOnUiThread(() -> {
                     viewModel.cargarJSONPeleadoresDesdeTexto(jsonPeleadores);
-                    peleadoresCargados = true;
                     chequearCargaCompleta();
                 });
             }).addOnFailureListener(e -> {
                 Log.e("MainActivity", "Error al cargar JSON", e);
                 Toast.makeText(this, "Error al cargar eventos", Toast.LENGTH_LONG).show();
             });
-        } else {
-            Log.d("MainActivity", "Datos ya cargados en el ViewModel");
         }
     }
 
@@ -157,13 +148,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void chequearCargaCompleta() {
-        if (eventosCargados && peleadoresCargados) {
+        if (viewModel.isDataLoadedCarteleras() && viewModel.isDataLoadedPeleadores()) {
             layoutCargando.setVisibility(View.GONE);
-            FragmentManager fragmentManager = this.getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            FragmentInicio fragmentInicial = new FragmentInicio();
-            fragmentTransaction.add(R.id.llContenedorFragments, fragmentInicial);
-            fragmentTransaction.commit();
+            mostrarFragmentInicioSiNoEsta();
+        }
+    }
+    private void mostrarFragmentInicioSiNoEsta() {
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.llContenedorFragments);
+        if (!(fragment instanceof FragmentInicio)) {
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.llContenedorFragments, new FragmentInicio());
+            ft.commit();
         }
     }
 

@@ -59,8 +59,67 @@
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/textViewNombrePeleador"
             app:layout_constraintTop_toBottomOf="@id/textViewApodo"
-            app:layout_constraintEnd_toEndOf="@id/textViewNombrePeleador"
-            android:layout_marginTop="2dp"/>
+            app:layout_constraintEnd_toStartOf="@id/layoutBotones"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutBotones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/textViewApodo"
+            app:layout_constraintStart_toEndOf="@id/textViewNacionalidad"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageButton
+                android:id="@+id/buttonFavorito"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_favorite"
+                android:background="@color/negroClaro"
+                android:contentDescription="Guardar evento"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/buttonLike"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageButton
+                android:id="@+id/buttonLike"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_thumb"
+                android:background="@color/negroClaro"
+                android:contentDescription="Me gusta"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintStart_toEndOf="@id/buttonFavorito"
+                app:layout_constraintEnd_toStartOf="@id/buttonDislike"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageButton
+                android:id="@+id/buttonDislike"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_thumb"
+                android:scaleX="-1"
+                android:scaleY="-1"
+                android:background="@color/negroClaro"
+                android:contentDescription="No me gusta"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintStart_toEndOf="@id/buttonLike"
+                app:layout_constraintEnd_toStartOf="@id/buttonComentarios"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageButton
+                android:id="@+id/buttonComentarios"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_comentario"
+                android:background="@color/negroClaro"
+                android:contentDescription="Comentarios"
+                app:layout_constraintStart_toEndOf="@id/buttonDislike"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

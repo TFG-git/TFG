@@ -121,8 +121,7 @@ public class FragmentPerfil extends Fragment {
         );
         adaptadorPaises.setDropDownViewResource(R.layout.spinner_item);
         spinnerNacionalidad.setAdapter(adaptadorPaises);
-        spinnerNacionalidad.setClickable(false);
-        spinnerNacionalidad.setFocusable(false);
+        spinnerNacionalidad.setEnabled(false);
 
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         usuarioRef = FirebaseDatabase.getInstance().getReference("usuarios").child(uid);
@@ -150,8 +149,6 @@ public class FragmentPerfil extends Fragment {
         editando = activar;
         etNombre.setEnabled(activar);
         spinnerNacionalidad.setEnabled(activar);
-        spinnerNacionalidad.setClickable(activar);
-        spinnerNacionalidad.setFocusable(true);
         spinnerNacionalidad.setAlpha(1f);
         etBio.setEnabled(activar);
         btnCambiarFoto.setVisibility(activar ? View.VISIBLE : View.GONE);

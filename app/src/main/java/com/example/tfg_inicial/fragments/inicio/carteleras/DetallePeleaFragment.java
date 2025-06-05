@@ -114,10 +114,20 @@ public class DetallePeleaFragment extends Fragment {
 
         if (pelea != null) {
             titulo.setText(pelea.getCategoriaPeso());
-            nombreRojo.setText(pelea.getPeleadorRojo().getNombre());
-            nombreAzul.setText(pelea.getPeleadorAzul().getNombre());
-            infoPelea.setText("Método: " + pelea.getMetodo() +
-                    "\nRound: " + pelea.getRonda() +
+            if(pelea.getGanador().equals("red")){
+                nombreRojo.setText("\uD83E\uDD47" + pelea.getPeleadorRojo().getNombre());
+                nombreAzul.setText(pelea.getPeleadorAzul().getNombre());
+                infoPelea.setText("Método: " + pelea.getMetodo());
+            }else if(pelea.getGanador().equals("blue")){
+                nombreRojo.setText(pelea.getPeleadorRojo().getNombre());
+                nombreAzul.setText("\uD83E\uDD47" + pelea.getPeleadorAzul().getNombre());
+                infoPelea.setText("Método: " + pelea.getMetodo());
+            }else{
+                nombreRojo.setText(pelea.getPeleadorRojo().getNombre());
+                nombreAzul.setText(pelea.getPeleadorAzul().getNombre());
+                infoPelea.setText("Empate");
+            }
+            infoPelea.append("\nRound: " + pelea.getRonda() +
                     "\nTiempo: " + pelea.getTiempo());
 
             //imageRojo.setImageResource(R.drawable.no_profile_image);

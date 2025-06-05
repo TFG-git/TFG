@@ -18,8 +18,10 @@ import com.example.tfg_inicial.InteraccionesManager;
 import com.example.tfg_inicial.MainViewModel;
 import com.example.tfg_inicial.R;
 import com.example.tfg_inicial.adaptadores.AdaptadorPersonalizadoCarteleras;
+import com.example.tfg_inicial.adaptadores.AdaptadorPersonalizadoPeleadores;
 import com.example.tfg_inicial.adaptadores.AdaptadorPersonalizadoPeleas;
 import com.example.tfg_inicial.clases.*;
+import com.example.tfg_inicial.dialogs.PeleadorDialogFragment;
 import com.example.tfg_inicial.fragments.inicio.FragmentInicio;
 import com.example.tfg_inicial.fragments.inicio.carteleras.carteleras_FragmentPeleas;
 
@@ -36,7 +38,7 @@ public class FragmentListas extends Fragment {
     private RecyclerView rvCarteleras, rvPeleas, rvPeleadores;
     private AdaptadorPersonalizadoCarteleras adaptadorCarteleras;
     private AdaptadorPersonalizadoPeleas adaptadorPeleas;
-    //private AdaptadorPersonalizadoPeleadores adaptadorPeleadores;
+    private AdaptadorPersonalizadoPeleadores adaptadorPeleadores;
 
     private MainViewModel viewModel;
     // TODO: Rename parameter arguments, choose names that match
@@ -95,11 +97,15 @@ public class FragmentListas extends Fragment {
         }, viewModel);
 
         adaptadorPeleas = new AdaptadorPersonalizadoPeleas(new ArrayList<>(), viewModel);
-        //adaptadorPeleadores = new AdaptadorPersonalizadoPeleadores(new ArrayList<>());
+
+        adaptadorPeleadores = new AdaptadorPersonalizadoPeleadores(new ArrayList<>(), peleador -> {
+            PeleadorDialogFragment dialog = PeleadorDialogFragment.newInstance(peleador);
+            dialog.show(getParentFragmentManager(), "detalle_peleador");
+        });
 
         rvCarteleras.setAdapter(adaptadorCarteleras);
         rvPeleas.setAdapter(adaptadorPeleas);
-        //rvPeleadores.setAdapter(adaptadorPeleadores);
+        rvPeleadores.setAdapter(adaptadorPeleadores);
 
         cargarFavoritosUsuario();
 
@@ -130,14 +136,14 @@ public class FragmentListas extends Fragment {
         });
 
         // Peleadores
-        InteraccionesManager.getFavoritos("peleadores", idsFavoritos -> {
+        InteraccionesManager.getFavoritos("peleador", idsFavoritos -> {
             List<Peleador> peleadoresFavs = new ArrayList<>();
             for (Peleador pel : viewModel.getPeleadoresAll()) {
-                if (idsFavoritos.contains(pel.getIdPeleador())) {
+                if (idsFavoritos.contains(Integer.parseInt(pel.getIdPeleador()))) {
                     peleadoresFavs.add(pel);
                 }
             }
-            //adaptadorPeleadores.actualizarLista(peleadoresFavs);
+            adaptadorPeleadores.actualizarLista(peleadoresFavs);
         });
     }
 }

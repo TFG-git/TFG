@@ -1,16 +1,25 @@
 package com.example.tfg_inicial.adaptadores;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.tfg_inicial.ComentariosFragment;
 import com.example.tfg_inicial.DescargarUrlCache;
+import com.example.tfg_inicial.InteraccionesManager;
 import com.example.tfg_inicial.R;
 import com.example.tfg_inicial.clases.Peleador;
 
@@ -57,6 +66,7 @@ public class AdaptadorPersonalizadoPeleadores extends RecyclerView.Adapter<Adapt
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imagePeleador;
         TextView textViewNombrePeleador, textViewApodo, textViewNacionalidad;
+        ImageButton buttonLike, buttonDislike, buttonFavorito, buttonComentarios;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,6 +74,10 @@ public class AdaptadorPersonalizadoPeleadores extends RecyclerView.Adapter<Adapt
             textViewNombrePeleador = itemView.findViewById(R.id.textViewNombrePeleador);
             textViewApodo = itemView.findViewById(R.id.textViewApodo);
             textViewNacionalidad = itemView.findViewById(R.id.textViewNacionalidad);
+            buttonLike = itemView.findViewById(R.id.buttonLike);
+            buttonDislike = itemView.findViewById(R.id.buttonDislike);
+            buttonFavorito = itemView.findViewById(R.id.buttonFavorito);
+            buttonComentarios = itemView.findViewById(R.id.buttonComentarios);
         }
 
         public void bind(Peleador peleador, OnItemClickListener listener) {
@@ -82,10 +96,94 @@ public class AdaptadorPersonalizadoPeleadores extends RecyclerView.Adapter<Adapt
                             .into(imagePeleador);
                 } else {
                     imagePeleador.setImageResource(R.drawable.no_profile_image);
+                    imagePeleador.setBackground(null);
                 }
             });
 
             itemView.setOnClickListener(v -> listener.onItemClick(peleador));
+
+            //Logica Botones
+            String peleadorId = peleador.getIdPeleador();
+
+            InteraccionesManager.getEstados("peleador", peleadorId, estado -> {
+                buttonLike.setImageResource(estado.like ? R.drawable.ic_thumb_filled : R.drawable.ic_thumb);
+                buttonDislike.setImageResource(estado.dislike ? R.drawable.ic_thumb_filled : R.drawable.ic_thumb);
+                buttonFavorito.setImageResource(estado.favorito ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite);
+            });
+
+            buttonLike.setOnClickListener(v -> {
+                InteraccionesManager.toggleLike("peleador", peleadorId);
+
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    InteraccionesManager.getEstados("peleador", peleadorId, estadoActualizado -> {
+                        buttonLike.setImageResource(estadoActualizado.like ? R.drawable.ic_thumb_filled : R.drawable.ic_thumb);
+                        buttonDislike.setImageResource(estadoActualizado.dislike ? R.drawable.ic_thumb_filled : R.drawable.ic_thumb);
+
+                        // Toast personalizado con icono del estado
+                        Toast toast = new Toast(v.getContext());
+                        LayoutInflater inflater = LayoutInflater.from(v.getContext());
+                        View layout = inflater.inflate(R.layout.toast_custom_icon, null);
+                        ImageView icon = layout.findViewById(R.id.toastIcon);
+                        TextView text = layout.findViewById(R.id.toastText);
+                        text.setText("Acción completada correctamente");
+                        toast.setView(layout);
+                        toast.setDuration(Toast.LENGTH_SHORT);
+                        toast.show();
+                    });
+                }, 300);
+            });
+
+            buttonDislike.setOnClickListener(v -> {
+                InteraccionesManager.toggleDislike("peleador", peleadorId);
+
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    InteraccionesManager.getEstados("peleador", peleadorId, estadoActualizado -> {
+                        buttonLike.setImageResource(estadoActualizado.like ? R.drawable.ic_thumb_filled : R.drawable.ic_thumb);
+                        buttonDislike.setImageResource(estadoActualizado.dislike ? R.drawable.ic_thumb_filled : R.drawable.ic_thumb);
+
+                        // Toast personalizado con icono del estado
+                        Toast toast = new Toast(v.getContext());
+                        LayoutInflater inflater = LayoutInflater.from(v.getContext());
+                        View layout = inflater.inflate(R.layout.toast_custom_icon, null);
+                        ImageView icon = layout.findViewById(R.id.toastIcon);
+                        TextView text = layout.findViewById(R.id.toastText);
+                        text.setText("Acción completada correctamente");
+                        toast.setView(layout);
+                        toast.setDuration(Toast.LENGTH_SHORT);
+                        toast.show();
+                    });
+                }, 300);
+            });
+
+            buttonFavorito.setOnClickListener(v -> {
+                InteraccionesManager.toggleFavorito("peleador", peleadorId);
+
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    InteraccionesManager.getEstados("peleador", peleadorId, estadoActualizado -> {
+                        buttonFavorito.setImageResource(estadoActualizado.favorito ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite);
+
+                        // Toast personalizado con icono del estado
+                        Toast toast = new Toast(v.getContext());
+                        LayoutInflater inflater = LayoutInflater.from(v.getContext());
+                        View layout = inflater.inflate(R.layout.toast_custom_icon, null);
+                        ImageView icon = layout.findViewById(R.id.toastIcon);
+                        TextView text = layout.findViewById(R.id.toastText);
+                        text.setText("Acción completada correctamente");
+                        toast.setView(layout);
+                        toast.setDuration(Toast.LENGTH_SHORT);
+                        toast.show();
+                    });
+                }, 300);
+            });
+
+            buttonComentarios.setOnClickListener(v -> {
+                FragmentManager fm = ((AppCompatActivity) v.getContext()).getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.setCustomAnimations(R.anim.fade_enter, R.anim.fade_exit); // transición suave
+                ft.replace(R.id.llContenedorFragments, ComentariosFragment.newInstance("peleador", peleadorId));
+                ft.addToBackStack(null);
+                ft.commit();
+            });
         }
     }
 }
