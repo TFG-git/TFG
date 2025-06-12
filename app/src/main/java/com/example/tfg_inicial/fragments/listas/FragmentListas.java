@@ -96,7 +96,7 @@ public class FragmentListas extends Fragment {
             ft.commit();
         }, viewModel);
 
-        adaptadorPeleas = new AdaptadorPersonalizadoPeleas(new ArrayList<>(), viewModel);
+        adaptadorPeleas = new AdaptadorPersonalizadoPeleas(new ArrayList<>(), viewModel, false);
 
         adaptadorPeleadores = new AdaptadorPersonalizadoPeleadores(new ArrayList<>(), peleador -> {
             PeleadorDialogFragment dialog = PeleadorDialogFragment.newInstance(peleador);

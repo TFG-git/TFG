@@ -135,9 +135,9 @@ public class PeleadorDialogFragment extends DialogFragment {
 
             RecyclerView recyclerView = view.findViewById(R.id.recyclerViewPeleas);
             FragmentManager fm = ((AppCompatActivity) requireActivity()).getSupportFragmentManager();
-            AdaptadorPersonalizadoPeleas adapter = new AdaptadorPersonalizadoPeleas(peleasDeEstePeleador, fm, this, viewModel);
+            AdaptadorPersonalizadoPeleas adapter = new AdaptadorPersonalizadoPeleas(peleasDeEstePeleador, fm, this, viewModel, true);
             recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
             // Llama al utils:
             int porcentajeStrikesPrecision = parsePorcentajeInt(peleador.getStrikesPrecision());

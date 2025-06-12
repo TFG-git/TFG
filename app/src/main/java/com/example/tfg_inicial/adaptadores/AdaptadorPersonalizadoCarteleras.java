@@ -66,7 +66,6 @@ public class AdaptadorPersonalizadoCarteleras extends RecyclerView.Adapter<Adapt
 
     @Override
     public int getItemCount() {
-        Log.d("itemCount", carteleraList.size() + "");
         return carteleraList.size();
     }
 
