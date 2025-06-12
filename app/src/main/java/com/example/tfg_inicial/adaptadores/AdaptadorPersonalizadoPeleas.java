@@ -41,23 +41,39 @@ public class AdaptadorPersonalizadoPeleas extends RecyclerView.Adapter<Adaptador
     private FragmentManager fragmentManager;
     private DialogFragment dialogFragment;
     private final MainViewModel viewModel;
-    public AdaptadorPersonalizadoPeleas(List<Pelea> peleaList, MainViewModel viewModel) {
+    private boolean esParaDialog;
+    public AdaptadorPersonalizadoPeleas(List<Pelea> peleaList, MainViewModel viewModel, boolean esParaDialog) {
         this.peleaList = peleaList;
         this.viewModel = viewModel;
+        this.esParaDialog = esParaDialog;
     }
 
     // Constructor extendido para instancia desde PeleadorDialogFragment
-    public AdaptadorPersonalizadoPeleas(List<Pelea> peleas, FragmentManager fragmentManager, DialogFragment dialogFragment, MainViewModel viewModel) {
+    public AdaptadorPersonalizadoPeleas(List<Pelea> peleas, FragmentManager fragmentManager, DialogFragment dialogFragment, MainViewModel viewModel, boolean esParaDialog) {
         this.peleaList = peleas;
         this.fragmentManager = fragmentManager;
         this.dialogFragment = dialogFragment;
         this.viewModel = viewModel;
+        this.esParaDialog = esParaDialog;
+    }
+
+    //
+    @Override
+    public int getItemViewType(int position) {
+        return esParaDialog ? 1 : 0;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View vista = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_peleasrecyclerview, parent, false);
+        View vista;
+        if (viewType == 1) {
+            vista = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_peleaslayoutpeleador, parent, false);
+        } else {
+            vista = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_peleasrecyclerview, parent, false);
+        }
         return new ViewHolder(vista);
     }
 
@@ -102,12 +118,36 @@ public class AdaptadorPersonalizadoPeleas extends RecyclerView.Adapter<Adaptador
 
         public void bind(Pelea pelea) {
             String nombreRojo = pelea.getPeleadorRojo() != null ? pelea.getPeleadorRojo().getNombre() : "Rojo";
+            String[] partesRojo = nombreRojo.split(" ");
+            if (partesRojo.length > 1) {
+                String nombre = partesRojo[0];
+                StringBuilder apellidos = new StringBuilder();
+                for (int i = 1; i < partesRojo.length; i++) {
+                    apellidos.append(partesRojo[i]);
+                    if (i < partesRojo.length - 1) apellidos.append(" ");
+                }
+                // Unimos con salto de línea
+                nombreRojo = nombre + "\n" + apellidos;
+            }
+
             String nombreAzul = pelea.getPeleadorAzul() != null ? pelea.getPeleadorAzul().getNombre() : "Azul";
+            String[] partesAzul = nombreAzul.split(" ");
+            if (partesAzul.length > 1) {
+                String nombre = partesAzul[0];
+                StringBuilder apellidos = new StringBuilder();
+                for (int i = 1; i < partesAzul.length; i++) {
+                    apellidos.append(partesAzul[i]);
+                    if (i < partesAzul.length - 1) apellidos.append(" ");
+                }
+                // Unimos con salto de línea
+                nombreAzul = nombre + "\n" + apellidos;
+            }
+
 
             textViewNombreRojo.setText(nombreRojo);
             textViewNombreAzul.setText(nombreAzul);
             textViewVs.setText("vs");
-            textViewMetodo.setText("Método: " + (pelea.getMetodo() != null ? pelea.getMetodo() : "N/A"));
+            textViewMetodo.setText("Por: " + (pelea.getMetodo() != null ? pelea.getMetodo() : "N/A"));
             textViewCategoria.setText((pelea.getCategoriaPeso() != null ? pelea.getCategoriaPeso() : "Desconocida"));
 
             imagePeleadorRojo.setImageResource(R.drawable.no_profile_image);
@@ -126,6 +166,7 @@ public class AdaptadorPersonalizadoPeleas extends RecyclerView.Adapter<Adaptador
                     imagePeleadorRojo.setImageResource(R.drawable.no_profile_image);
                 }
             });
+            imagePeleadorRojo.setAdjustViewBounds(true);
             imagePeleadorRojo.setOnClickListener(v -> {
                 Context context = v.getContext();
                 PeleadorDialogFragment dialog = PeleadorDialogFragment.newInstance(peleadorGlobalRojo);
@@ -149,6 +190,7 @@ public class AdaptadorPersonalizadoPeleas extends RecyclerView.Adapter<Adaptador
                     imagePeleadorAzul.setImageResource(R.drawable.no_profile_image);
                 }
             });
+            imagePeleadorAzul.setAdjustViewBounds(true);
             imagePeleadorAzul.setOnClickListener(v -> {
                 Context context = v.getContext();
                 PeleadorDialogFragment dialog = PeleadorDialogFragment.newInstance(peleadorGlobalAzul);
@@ -255,12 +297,22 @@ public class AdaptadorPersonalizadoPeleas extends RecyclerView.Adapter<Adaptador
             });
 
             buttonComentarios.setOnClickListener(v -> {
-                FragmentManager fm = ((AppCompatActivity) v.getContext()).getSupportFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.setCustomAnimations(R.anim.fade_enter, R.anim.fade_exit); // transición suave
-                ft.replace(R.id.llContenedorFragments, ComentariosFragment.newInstance("pelea", peleaId));
-                ft.addToBackStack(null);
-                ft.commit();
+                if (fragmentManager != null){
+                    FragmentManager fm = fragmentManager;
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.setCustomAnimations(R.anim.fade_enter, R.anim.fade_exit); // transición suave
+                    ft.replace(R.id.llContenedorFragments, ComentariosFragment.newInstance("pelea", peleaId));
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }else{
+                    FragmentManager fm = ((AppCompatActivity) v.getContext()).getSupportFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.setCustomAnimations(R.anim.fade_enter, R.anim.fade_exit); // transición suave
+                    ft.replace(R.id.llContenedorFragments, ComentariosFragment.newInstance("pelea", peleaId));
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
+                if (dialogFragment != null) dialogFragment.dismiss();
             });
         }
 

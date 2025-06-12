@@ -61,7 +61,7 @@ public class carteleras_FragmentPeleas extends Fragment {
         MainViewModel viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
         if (cartelera != null && cartelera.getPeleas() != null) {
-            AdaptadorPersonalizadoPeleas adaptador = new AdaptadorPersonalizadoPeleas(cartelera.getPeleas(), viewModel);
+            AdaptadorPersonalizadoPeleas adaptador = new AdaptadorPersonalizadoPeleas(cartelera.getPeleas(), viewModel, false);
             recyclerViewPeleas.setAdapter(adaptador);
         }
     }

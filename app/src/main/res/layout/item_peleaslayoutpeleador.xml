@@ -1,0 +1,167 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="6dp"
+    app:cardBackgroundColor="@color/negroClaro">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:background="@color/negroClaro">
+
+        <!-- Nombres y VS arriba -->
+        <TextView
+            android:id="@+id/textViewNombreRojo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Nombre Rojo"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textColor="@color/blanco"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/textViewVs"
+            app:layout_constraintWidth_percent="0.4"
+            android:layout_marginEnd="4dp"/>
+
+        <TextView
+            android:id="@+id/textViewVs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="vs"
+            android:textColor="@color/grisClaro"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textViewNombreRojo"
+            app:layout_constraintEnd_toStartOf="@id/textViewNombreAzul"/>
+
+        <TextView
+            android:id="@+id/textViewNombreAzul"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Nombre Azul"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textColor="@color/blanco"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textViewVs"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.4"
+            android:layout_marginStart="4dp"/>
+
+        <!-- Imágenes debajo de nombres -->
+        <ImageView
+            android:id="@+id/imagePeleadorRojo"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/no_profile_image"
+            app:layout_constraintTop_toBottomOf="@id/textViewNombreRojo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imagePeleadorAzul"
+            app:layout_constraintWidth_percent="0.45"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="4dp"/>
+
+        <ImageView
+            android:id="@+id/imagePeleadorAzul"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/no_profile_image"
+            app:layout_constraintTop_toBottomOf="@id/textViewNombreAzul"
+            app:layout_constraintStart_toEndOf="@id/imagePeleadorRojo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.45"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"/>
+
+        <!-- Método/Categoría debajo de imágenes -->
+        <TextView
+            android:id="@+id/textViewCategoria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Categoría"
+            android:textColor="@color/grisClaro"
+            android:gravity="center"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/imagePeleadorRojo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/textViewMetodo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Método de victoria"
+            android:textColor="@color/gris"
+            android:gravity="center"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/textViewCategoria"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="2dp"/>
+
+        <!-- Botones centrados, al final -->
+        <LinearLayout
+            android:id="@+id/layoutBotones"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/textViewMetodo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="12dp">
+
+            <ImageButton
+                android:id="@+id/buttonFavorito"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_favorite"
+                android:background="@color/negroClaro"
+                android:contentDescription="Favorito"
+                android:layout_marginEnd="8dp" />
+
+            <ImageButton
+                android:id="@+id/buttonLike"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_thumb"
+                android:background="@color/negroClaro"
+                android:contentDescription="Me gusta"
+                android:layout_marginEnd="8dp" />
+
+            <ImageButton
+                android:id="@+id/buttonDislike"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_thumb"
+                android:scaleX="-1"
+                android:scaleY="-1"
+                android:background="@color/negroClaro"
+                android:contentDescription="No me gusta"
+                android:layout_marginEnd="8dp" />
+
+            <ImageButton
+                android:id="@+id/buttonComentarios"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_comentario"
+                android:background="@color/negroClaro"
+                android:contentDescription="Comentarios" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
